@@ -186,7 +186,7 @@ public class CustomerController : Controller
          // GET: Customer/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Bills == null)
+            if (id == null || _context.Customers == null)
             {
                 return NotFound();
             }
@@ -201,7 +201,7 @@ public class CustomerController : Controller
             return View(customer);
         }
 
-        // POST: Bill/Delete/5
+        // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -210,7 +210,17 @@ public class CustomerController : Controller
             {
                 return Problem("Entity set 'ApplicationDbContext.Customers'  is null.");
             }
-            var customer = await _context.Customers.FindAsync(id);
+    var customer = await _context.Customers.FindAsync(id);
+    //validar que no este asociado a ningun proyecto
+    if (_context.Projects.Any(c => c.id_customer == id))
+    {
+      // ModelState.AddModelError("", "No se puede eliminar el estado porque tiene clientes asociados.");
+      //return View(customer); // o redirigir a Details u otra vista con mensaje
+       TempData["ErrorMessage"] = "No se puede eliminar porque hay clientes asociados a proyectos.";
+      return RedirectToAction("Details", new { id = id });
+    }
+
+          
             if (customer != null)
             {
                 _context.Customers.Remove(customer);

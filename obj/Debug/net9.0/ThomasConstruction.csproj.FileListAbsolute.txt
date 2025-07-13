@@ -144,3 +144,4 @@ D:\Work\Programacion\.net core\ThomasConstruction\ThomasConstruction\obj\Debug\n
 D:\Work\Programacion\.net core\ThomasConstruction\ThomasConstruction\obj\Debug\net9.0\ThomasConstruction.pdb
 D:\Work\Programacion\.net core\ThomasConstruction\ThomasConstruction\obj\Debug\net9.0\ThomasConstruction.genruntimeconfig.cache
 D:\Work\Programacion\.net core\ThomasConstruction\ThomasConstruction\obj\Debug\net9.0\ref\ThomasConstruction.dll
+D:\Work\Programacion\.net core\ThomasConstruction\ThomasConstruction\obj\Debug\net9.0\ThomasConstruction.sourcelink.json

@@ -1,0 +1,44 @@
+﻿@model ThomasConstruction.ViewModels.ProjectViewModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Project</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="id_project" />
+            <div class="form-group">
+                <label asp-for="project_name" class="control-label"></label>
+                <input asp-for="project_name" class="form-control" />
+                <span asp-validation-for="project_name" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group">
+            <label asp-for="id_customer"></label>
+                <!-- Dropdown con los estados -->
+           <select asp-for="id_customer" class="form-select" name="id_customer" asp-items="Model.customers")">
+            <option value="">-- Select State --</option>
+            </select>
+            <span asp-validation-for="id_customer" class="text-danger"></span>
+            </div>
+
+            
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

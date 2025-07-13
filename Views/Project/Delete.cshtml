@@ -1,4 +1,4 @@
-﻿@model ThomasConstruction.Models.CustomerModel
+﻿@model ThomasConstruction.Models.ProjectModel
 
 @{
     ViewData["Title"] = "Delete";
@@ -8,27 +8,29 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Customer</h4>
+    <h4>Project</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.customer_name)
+            @Html.DisplayNameFor(model => model.project_name)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.customer_name)
+            @Html.DisplayFor(model => model.project_name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.phone)
+            @Html.DisplayNameFor(model => model.customer.customer_name)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.phone)
+            @Html.DisplayFor(model => model.customer.customer_name)
         </dd>
         
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="id_customer" />
+        <input type="hidden" asp-for="id_project" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>
+
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 </div>

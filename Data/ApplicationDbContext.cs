@@ -13,7 +13,9 @@ public class ApplicationDbContext : DbContext
     public DbSet<CustomerModel> Customers { get; set; } = default!;
 
     public DbSet<StateModel> States { get; set; } = default!;
+
+    public DbSet<ProjectModel> Projects { get; set; } = default!;
     
-     //public DbSet<CustomerStateModel> CustomerStates { get; set; } = default!;
+    
 
 }
