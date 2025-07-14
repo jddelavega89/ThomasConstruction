@@ -77,6 +77,10 @@ public class ProjectController : Controller
     {
       id_project = project.id_project,
       project_name = project.project_name,
+      project_date = project.project_date,
+      downpayment = project.downpayment,
+      budget = project.budget,
+
       id_customer = project.id_customer, // valor que debe aparecer seleccionado
       customers = _context.Customers
               .Select(s => new SelectListItem
@@ -109,6 +113,9 @@ public class ProjectController : Controller
         var projectModel = _context.Projects.Find(project.id_project);
         projectModel.project_name = project.project_name!;
         projectModel.id_customer = project.id_customer!;
+        projectModel.budget = project.budget;
+        projectModel.downpayment = project.downpayment;
+        projectModel.project_date = project.project_date;
         
 
         _context.Update(projectModel);
@@ -159,7 +166,11 @@ public class ProjectController : Controller
              {
                id_project = project.id_project,
                project_name = project.project_name,
+               budget = project.budget,
+               cost = project.cost,
                profit = project.profit,
+               downpayment = project.downpayment,
+               project_date = project.project_date,
                customer = _context.Customers.Find(project.id_customer)?.customer_name
                                       
              };

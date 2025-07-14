@@ -15,14 +15,20 @@
             <th>
                 @Html.DisplayNameFor(model => model.project_name)
             </th>
-           
+              <th>
+                @Html.DisplayNameFor(model => model.customer.customer_name)
+            </th>
+           <th>
+                @Html.DisplayNameFor(model => model.budget)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.cost)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.profit)
             </th>
            
-             <th>
-                @Html.DisplayNameFor(model => model.customer.customer_name)
-            </th>
+           
             <th></th>
         </tr>
     </thead>
@@ -32,14 +38,20 @@
             <td>
                 @Html.DisplayFor(modelItem => item.project_name)
             </td>
-
+             <td>
+                @Html.DisplayFor(modelItem => item.customer.customer_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.budget)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.cost)
+            </td>
              <td>
                 @Html.DisplayFor(modelItem => item.profit)
             </td>
            
-            <td>
-                @Html.DisplayFor(modelItem => item.customer.customer_name)
-            </td>
+           
             <td>
                 <a asp-action="Edit" asp-route-id="@item.id_project">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.id_project">Details</a> |

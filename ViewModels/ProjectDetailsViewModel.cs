@@ -17,7 +17,24 @@ namespace ThomasConstruction.ViewModels
 
         [Display(Name = "Profit")]
         [DataType(DataType.Currency)]
-        public double? profit { get; set; } = 0;
+        public double? profit { get; set; }
+
+         [DataType(DataType.Currency)]
+        [Display(Name = "Downpayment")]
+        public double? downpayment { get; set; } 
+      
+        [DataType(DataType.Currency)]
+        [Display(Name = "Budget")]
+        public double budget { get; set; }
+
+        [DataType(DataType.Currency)]
+        [Display(Name = "Cost")]
+        public double? cost { get; set; } 
+
+        [Display(Name = "Contract Date")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+         public DateTime? project_date { get; set; } 
 
        public int id_customer { get; set; }
 

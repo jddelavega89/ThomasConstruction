@@ -16,6 +16,13 @@ public class ApplicationDbContext : DbContext
 
     public DbSet<ProjectModel> Projects { get; set; } = default!;
     
+     public DbSet<PaymentModel> Payments { get; set; } = default!;
     
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ProjectModel>()
+            .Property(p => p.profit)
+            .HasComputedColumnSql("[bueget] - [cost]", stored: true); // Ajusta esto según tu fórmula real
+    }
 
 }
