@@ -142,10 +142,21 @@ public async Task<IActionResult> Edit(int? id)
                 return Problem("Entity set 'ApplicationDbContext.Bills'  is null.");
             }
             var billModel = await _context.Bills.FindAsync(id);
+            
+           //validar que no este asociado a ningun Bill
+          if (_context.ProjectBills.Any(c => c.id_bill == id))
+          {
+            // ModelState.AddModelError("", "No se puede eliminar el estado porque tiene clientes asociados.");
+            //return View(customer); // o redirigir a Details u otra vista con mensaje
+            TempData["ErrorMessage"] = "No se puede eliminar porque hay Bills asociados a esta categoria.";
+            return RedirectToAction("Details", new { id = id });
+          }
+
+
             if (billModel != null)
-            {
-                _context.Bills.Remove(billModel);
-            }
+    {
+      _context.Bills.Remove(billModel);
+    }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

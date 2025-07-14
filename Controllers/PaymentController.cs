@@ -216,10 +216,10 @@ public class PaymentController : Controller
         
         
         private bool PaymentModelExists(int id)
-  {
-    return (_context.Payments?.Any(e => e.id_payment == id)).GetValueOrDefault();
-  }
-    
+        {
+          return (_context.Payments?.Any(e => e.id_payment == id)).GetValueOrDefault();
+        }
+          
 
 
 

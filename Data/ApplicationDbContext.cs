@@ -17,6 +17,8 @@ public class ApplicationDbContext : DbContext
     public DbSet<ProjectModel> Projects { get; set; } = default!;
     
      public DbSet<PaymentModel> Payments { get; set; } = default!;
+
+      public DbSet<ProjectBillModel> ProjectBills { get; set; } = default!;
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
