@@ -1,0 +1,70 @@
+﻿@model ThomasConstruction.ViewModels.SupplieDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+
+
+<div>
+    <h4>Supplie</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.date_supplie)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.date_supplie)
+        </dd>
+         
+         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.project)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.project)
+        </dd>
+         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.details)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.details)
+        </dd>
+         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.amount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.amount)
+        </dd>
+
+         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.price)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.price)
+        </dd>
+
+         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.price_tax)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.price_tax)
+        </dd>
+
+           <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.total_price)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.total_price)
+        </dd>
+
+       
+      
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.id_supplie">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

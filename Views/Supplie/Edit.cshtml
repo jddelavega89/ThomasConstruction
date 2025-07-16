@@ -1,0 +1,85 @@
+﻿@model ThomasConstruction.ViewModels.SupplieViewModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Supplie</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="id_supplie" />
+            <div class="form-group">
+                <label asp-for="date_supplie" class="control-label"></label>
+                <input asp-for="date_supplie" class="form-control" />
+                <span asp-validation-for="date_supplie" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group">
+            <label asp-for="id_project"></label>
+                <!-- Dropdown con los estados -->
+           <select asp-for="id_project" class="form-select" name="id_project" asp-items="Model.projects")">
+            <option value="">-- Select Project --</option>
+            </select>
+            <span asp-validation-for="id_project" class="text-danger"></span>
+            </div>
+
+              <div class="form-group">
+                <label asp-for="details" class="control-label"></label>
+                <input asp-for="details" class="form-control" />
+                <span asp-validation-for="details" class="text-danger"></span>
+            </div>
+
+              <div class="form-group">
+                <label asp-for="amount" class="control-label"></label>
+                <input asp-for="amount" class="form-control" />
+                <span asp-validation-for="amount" class="text-danger"></span>
+            </div>
+
+                 <div class="form-group">
+                <label asp-for="price" class="control-label"></label>
+                <input asp-for="price" class="form-control" />
+                <span asp-validation-for="price" class="text-danger"></span>
+            </div>
+
+             <div class="form-group">
+                <label asp-for="price_tax"></label>
+                <input asp-for="price_tax" class="form-control" id="price_tax" readonly />
+            </div>
+
+             <div class="form-group">
+                <label asp-for="total_price"></label>
+                <input asp-for="total_price" class="form-control" id="total_price" readonly />
+            </div>
+
+                       
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+    function calculate() {
+            let amount = parseFloat(document.getElementById("amount").value) || 0;
+            let price = parseFloat(document.getElementById("price").value) + ((parseFloat(document.getElementById("price").value) * 0.0825)) || 0;
+            let total_price = amount * price;
+            document.getElementById("total_price").value = total_price.toFixed(2);
+            document.getElementById("price_tax").value = price.toFixed(2);
+        }
+
+        document.getElementById("amount").addEventListener("input", calculate);
+        document.getElementById("price").addEventListener("input", calculate);
+</script>
+}
