@@ -1,0 +1,49 @@
+﻿@model ThomasConstruction.ViewModels.ChangeOrderDetailsViewModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+
+
+<div>
+    <h4>Change Order</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.change_date)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.change_date)
+        </dd>
+         
+         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.project)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.project)
+        </dd>
+        
+         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.amount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.amount)
+        </dd>
+
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.details)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.details)
+        </dd>
+      
+
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.id_change">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

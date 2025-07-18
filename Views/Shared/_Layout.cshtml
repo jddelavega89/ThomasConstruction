@@ -13,10 +13,7 @@
 </head>
 <body>
 
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-house-up" id="house-up">
-  <path d="M7.293 1.5a1 1 0 0 1 1.414 0L11 3.793V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v3.293l2.354 2.353a.5.5 0 0 1-.708.708L8 2.207l-5 5V13.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 2 13.5V8.207l-.646.647a.5.5 0 1 1-.708-.708z"/>
-  <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.354-5.854 1.5 1.5a.5.5 0 0 1-.708.708L13 11.707V14.5a.5.5 0 1 1-1 0v-2.793l-.646.647a.5.5 0 0 1-.708-.707l1.5-1.5a.5.5 0 0 1 .708 0Z"/>
-</svg>
+
 
     <header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark"> 
         <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="#">Thomas Construction</a> 
@@ -45,7 +42,7 @@ Dashboard
 </a> </li> 
 
 
-<li class="nav-item"> <a class="nav-link d-flex align-items-center gap-2" href="Customers">
+<li class="nav-item"> <a class="nav-link d-flex align-items-center gap-2" href="Customer">
 <svg class="bi" aria-hidden="true"><use xlink:href="#people"></use></svg>
 Customers
 </a> </li> 
@@ -63,6 +60,11 @@ Bills
 Receipts
 </a> </li> <li class="nav-item"> <a class="nav-link d-flex align-items-center gap-2" href="Supplie"> <svg class="bi" aria-hidden="true"><use xlink:href="#puzzle"></use></svg>
 Supplies
+
+</a> </li> 
+
+ <li class="nav-item"> <a class="nav-link d-flex align-items-center gap-2" href="ChangeOrder"> <svg class="bi" aria-hidden="true"><use xlink:href="#puzzle"></use></svg>
+Change Orders
 
 </a> </li> 
 
@@ -98,5 +100,6 @@ Sign out
     <script src="~/lib/js/dashboard.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    @await Html.PartialAsync("SVGs/_IconHome")
 </body>
 </html>

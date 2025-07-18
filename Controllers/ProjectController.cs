@@ -209,11 +209,35 @@ public class ProjectController : Controller
             {
                 return Problem("Entity set 'ApplicationDbContext.Project'  is null.");
             }
-            var project = await _context.Projects.FindAsync(id);
+    //var project = await _context.Projects.FindAsync(id);
+            
+          var project = await _context.Projects
+        .Include(p => p.payments)
+        .Include(p => p.projectBill)
+        .Include(p => p.receipt)
+        .Include(p => p.supplie)
+        .Include(p => p.changeOrder)
+        .FirstOrDefaultAsync(p => p.id_project == id);
             if (project != null)
-            {
-                _context.Projects.Remove(project);
-            }
+    {
+      //debo buscar todos los elementos aosciados al proywecto y eliminarlos
+      if (project.payments != null)
+        _context.Payments.RemoveRange(project.payments);
+
+      if (project.projectBill != null)
+        _context.ProjectBills.RemoveRange(project.projectBill);  
+
+       if (project.receipt != null)
+        _context.Receipts.RemoveRange(project.receipt);  
+
+       if (project.supplie != null)
+        _context.Supplies.RemoveRange(project.supplie);     
+
+         if (project.changeOrder != null)
+        _context.changeOrders.RemoveRange(project.changeOrder);      
+
+      _context.Projects.Remove(project);
+    }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

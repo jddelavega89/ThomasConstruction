@@ -19,11 +19,11 @@ namespace ThomasConstruction.Models
         [Display(Name = "Profit")]
         public double profit { get; }
 
-        
-         [DataType(DataType.Currency)]
+
+        [DataType(DataType.Currency)]
         [Display(Name = "Downpayment")]
         public double? downpayment { get; set; } = 0;
-      
+
         [DataType(DataType.Currency)]
         [Display(Name = "Budget")]
         public double budget { get; set; }
@@ -36,13 +36,22 @@ namespace ThomasConstruction.Models
         [Display(Name = "Contract Date")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-         public DateTime? project_date { get; set; } 
+        public DateTime? project_date { get; set; }
 
 
+        [Display(Name = "Costumer")]
         public int id_customer { get; set; }
 
         [ForeignKey("id_customer")]
         public required CustomerModel customer { get; set; } // Relation with Customer
+
+        public List<PaymentModel>? payments { get; set; }
+        public List<ProjectBillModel>? projectBill { get; set; }
+
+        public List<ReceiptModel>? receipt { get; set; }
+        public List<SupplieModel>? supplie { get; set; }
+
+        public List<ChangeOrderModel>? changeOrder { get; set; }
         
     
     }
