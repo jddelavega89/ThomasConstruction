@@ -28,6 +28,9 @@ namespace ThomasConstruction.Models
         [Display(Name = "Budget")]
         public double budget { get; set; }
 
+         [Display(Name = "Total Budget")]
+        public double? total_budget { get; set; }
+
         [DataType(DataType.Currency)]
         [Display(Name = "Cost")]
         public double? cost { get; set; } = 0;

@@ -49,6 +49,8 @@ public class ProjectController : Controller
     //if (ModelState.IsValid)
     if (!string.IsNullOrWhiteSpace(project.project_name) && project.id_customer != 0)
     {
+      project.total_budget = project.budget;
+
       _context.Add(project);
       await _context.SaveChangesAsync();
       return RedirectToAction(nameof(Index));
@@ -108,6 +110,13 @@ public class ProjectController : Controller
 
    if (!string.IsNullOrWhiteSpace(project.project_name) && project.id_customer != 0)
     {
+      
+      var changeOrders = await _context.ChangeOrders
+                .Where(c => c.id_project == project.id_project)
+                .ToListAsync();
+
+      double totalChanges = changeOrders.Sum(c => c.amount);
+
       try
       {
         var projectModel = _context.Projects.Find(project.id_project);
@@ -116,7 +125,8 @@ public class ProjectController : Controller
         projectModel.budget = project.budget;
         projectModel.downpayment = project.downpayment;
         projectModel.project_date = project.project_date;
-        
+        projectModel.total_budget = project.budget + totalChanges;
+
 
         _context.Update(projectModel);
         await _context.SaveChangesAsync();
@@ -234,7 +244,7 @@ public class ProjectController : Controller
         _context.Supplies.RemoveRange(project.supplie);     
 
          if (project.changeOrder != null)
-        _context.changeOrders.RemoveRange(project.changeOrder);      
+        _context.ChangeOrders.RemoveRange(project.changeOrder);      
 
       _context.Projects.Remove(project);
     }

@@ -50,6 +50,17 @@ public class ChangeOrderController : Controller
     if (changeOrder.id_project != 0)
     {
       _context.Add(changeOrder);
+
+       // Buscar proyecto asociado y actualizar su budget_total
+        var project = await _context.Projects
+            .FirstOrDefaultAsync(p => p.id_project == changeOrder.id_project);
+
+        if (project != null)
+        {
+            project.total_budget += changeOrder.amount;
+            _context.Update(project);
+        }
+
       await _context.SaveChangesAsync();
       return RedirectToAction(nameof(Index));
     }
@@ -109,6 +120,13 @@ public class ChangeOrderController : Controller
     {
       try
       {
+
+        //antes de actualizar necesito saber el monto del cambio de orden para restarlo al 
+        //budget_total y despues sumar el nuevo monto
+        var changeOrderBeforeU =  await _context.ChangeOrders
+    .AsNoTracking() // importante para evitar conflicto de tracking
+    .FirstOrDefaultAsync(c => c.id_change == changeOrder.id_change);
+
         var changeOrderModel = _context.ChangeOrders.Find(changeOrder.id_change);
         changeOrderModel.change_date = changeOrder.change_date!;
         changeOrderModel.id_project = changeOrder.id_project!;
@@ -117,7 +135,19 @@ public class ChangeOrderController : Controller
                
 
         _context.Update(changeOrderModel);
-        await _context.SaveChangesAsync();
+
+      // Buscar proyecto asociado y actualizar su budget_total
+        var project = await _context.Projects
+            .FirstOrDefaultAsync(p => p.id_project == changeOrder.id_project);
+
+        if (project != null)
+        {
+          double change = changeOrder.amount - (changeOrderBeforeU != null ? changeOrderBeforeU.amount : 0);
+          project.total_budget += change ;
+          _context.Update(project);
+          await _context.SaveChangesAsync(); 
+        }
+
       }
       catch (DbUpdateConcurrencyException)
       {
@@ -205,10 +235,22 @@ public class ChangeOrderController : Controller
                 return Problem("Entity set 'ApplicationDbContext.ChangeOrder'  is null.");
             }
             var changeOrder = await _context.ChangeOrders.FindAsync(id);
-            if (changeOrder != null)
-            {
-                _context.ChangeOrders.Remove(changeOrder);
-            }
+    if (changeOrder != null)
+    {
+      _context.ChangeOrders.Remove(changeOrder);
+      //rebajar la orden del budget total
+              var project = await _context.Projects
+            .FirstOrDefaultAsync(p => p.id_project == changeOrder.id_project);
+
+        if (project != null)
+        {
+           project.total_budget -= changeOrder.amount ;
+          _context.Update(project);
+         
+        }
+                
+
+    }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
