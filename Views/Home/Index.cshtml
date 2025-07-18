@@ -3,6 +3,60 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h5 class="display-4">Dashboard</h1>
+    <canvas id="projectChart" width="600" height="300"></canvas>
+    
 </div>
+
+<script>
+    const labels = @Html.Raw(ViewBag.ProjectNames);
+    const profits = @Html.Raw(ViewBag.Profits);
+    const costs = @Html.Raw(ViewBag.Costs);
+
+    const ctx = document.getElementById('projectChart').getContext('2d');
+
+    const projectChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [
+                {
+                    label: 'Profit',
+                    data: profits,
+                    borderColor: 'green',
+                    backgroundColor: 'rgba(0,128,0,0.2)',
+                    fill: false,
+                    tension: 0.4
+                },
+                {
+                    label: 'Cost',
+                    data: costs,
+                    borderColor: 'red',
+                    backgroundColor: 'rgba(255,0,0,0.2)',
+                    fill: false,
+                    tension: 0.4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Profits vs Cost by Project'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return '$' + value;
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+

@@ -61,6 +61,15 @@ public class SupplieController : Controller
 
 
       _context.Add(supplieModel);
+       //actualizar el costo del proyecto
+       var project = await _context.Projects
+            .FirstOrDefaultAsync(p => p.id_project == supplie.id_project);
+
+        if (project != null)
+      {
+        project.cost += supplie.amount;
+        _context.Update(project);
+      }
       await _context.SaveChangesAsync();
       return RedirectToAction(nameof(Index));
     }
@@ -156,6 +165,11 @@ public class SupplieController : Controller
 
     if (supplie.id_supplie != 0)
     {
+
+        var supplieBeforeU = await _context.Supplies
+    .AsNoTracking() // importante para evitar conflicto de tracking
+    .FirstOrDefaultAsync(c => c.id_supplie == supplie.id_supplie);
+
       try
       {
         var supplieModel = _context.Supplies.Find(supplie.id_supplie);
@@ -167,6 +181,17 @@ public class SupplieController : Controller
 
 
         _context.Update(supplieModel);
+
+        var project = await _context.Projects
+            .FirstOrDefaultAsync(p => p.id_project == supplie.id_project);
+        if (project != null)
+        {
+          double diff = supplie.amount - (supplieBeforeU != null ? supplieBeforeU.amount : 0);
+          project.cost += diff;
+          _context.Update(project);
+
+        }
+
         await _context.SaveChangesAsync();
       }
       catch (DbUpdateConcurrencyException)
@@ -227,6 +252,15 @@ public class SupplieController : Controller
             {
                 _context.Supplies.Remove(supplie);
             }
+             //actualizar el costo del proyecto
+       var project = await _context.Projects
+            .FirstOrDefaultAsync(p => p.id_project == supplie.id_project);
+
+        if (project != null)
+        {
+            project.cost -= supplie.amount;
+            _context.Update(project);
+        }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

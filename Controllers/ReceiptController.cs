@@ -50,6 +50,17 @@ public class ReceiptController : Controller
     if (receipt.id_project != 0)
     {
       _context.Add(receipt);
+
+    //actualizar el costo del proyecto
+       var project = await _context.Projects
+            .FirstOrDefaultAsync(p => p.id_project == receipt.id_project);
+
+        if (project != null)
+        {
+            project.cost += receipt.amount;
+            _context.Update(project);
+        }
+
       await _context.SaveChangesAsync();
       return RedirectToAction(nameof(Index));
     }
@@ -107,6 +118,11 @@ public class ReceiptController : Controller
 
    if (receipt.id_receipt != 0)
     {
+      
+       var receiptBeforeU = await _context.Receipts
+    .AsNoTracking() // importante para evitar conflicto de tracking
+    .FirstOrDefaultAsync(c => c.id_receipt == receipt.id_receipt);
+
       try
       {
         var receiptModel = _context.Receipts.Find(receipt.id_receipt);
@@ -114,9 +130,20 @@ public class ReceiptController : Controller
         receiptModel.id_project = receipt.id_project!;
         receiptModel.amount = receipt.amount;
         receiptModel.details = receipt.details;
-               
+
 
         _context.Update(receiptModel);
+
+         var project = await _context.Projects
+            .FirstOrDefaultAsync(p => p.id_project == receipt.id_project);
+        if (project != null)
+        {
+          double diff = receipt.amount - (receiptBeforeU != null ? receiptBeforeU.amount : 0);
+          project.cost += diff;
+          _context.Update(project);
+
+        }
+
         await _context.SaveChangesAsync();
       }
       catch (DbUpdateConcurrencyException)
@@ -209,6 +236,17 @@ public class ReceiptController : Controller
             {
                 _context.Receipts.Remove(receipt);
             }
+
+               //actualizar el costo del proyecto
+        var project = await _context.Projects
+            .FirstOrDefaultAsync(p => p.id_project == receipt.id_project);
+
+        if (project != null)
+        {
+            project.cost -= receipt.amount;
+            _context.Update(project);
+        }
+            
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

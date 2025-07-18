@@ -15,7 +15,8 @@ namespace ThomasConstruction.ViewModels
         required
         public string project_name { get; set; }
 
-        [Display(Name = "Profit")]
+        [DataType(DataType.Currency)]
+       [Display(Name = "Profit")]
         public double? profit { get; set; }
 
           [DataType(DataType.Currency)]
@@ -23,8 +24,12 @@ namespace ThomasConstruction.ViewModels
         public double? downpayment { get; set; } 
       
         [DataType(DataType.Currency)]
-        [Display(Name = "Budget")]
+        [Display(Name = "Initial Budget")]
         public double budget { get; set; }
+
+         [DataType(DataType.Currency)]
+        [Display(Name = "Total Budget")]
+        public double? total_budget { get; set; }
 
         [DataType(DataType.Currency)]
         [Display(Name = "Cost")]

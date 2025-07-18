@@ -123,7 +123,7 @@ public class ChangeOrderController : Controller
 
         //antes de actualizar necesito saber el monto del cambio de orden para restarlo al 
         //budget_total y despues sumar el nuevo monto
-        var changeOrderBeforeU =  await _context.ChangeOrders
+        var changeOrderBeforeU = await _context.ChangeOrders
     .AsNoTracking() // importante para evitar conflicto de tracking
     .FirstOrDefaultAsync(c => c.id_change == changeOrder.id_change);
 
@@ -132,21 +132,22 @@ public class ChangeOrderController : Controller
         changeOrderModel.id_project = changeOrder.id_project!;
         changeOrderModel.amount = changeOrder.amount;
         changeOrderModel.details = changeOrder.details;
-               
+
 
         _context.Update(changeOrderModel);
 
-      // Buscar proyecto asociado y actualizar su budget_total
+        // Buscar proyecto asociado y actualizar su budget_total
         var project = await _context.Projects
             .FirstOrDefaultAsync(p => p.id_project == changeOrder.id_project);
 
         if (project != null)
         {
           double change = changeOrder.amount - (changeOrderBeforeU != null ? changeOrderBeforeU.amount : 0);
-          project.total_budget += change ;
+          project.total_budget += change;
           _context.Update(project);
-          await _context.SaveChangesAsync(); 
+
         }
+         await _context.SaveChangesAsync(); 
 
       }
       catch (DbUpdateConcurrencyException)

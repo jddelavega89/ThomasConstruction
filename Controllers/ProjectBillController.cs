@@ -49,6 +49,17 @@ public class ProjectBillController : Controller
     if (projectBill.id_project != 0 && projectBill.id_bill != 0)
     {
       _context.Add(projectBill);
+
+      //actualizar el costo del proyecto
+       var project = await _context.Projects
+            .FirstOrDefaultAsync(p => p.id_project == projectBill.id_project);
+
+        if (project != null)
+        {
+            project.cost += projectBill.amount;
+            _context.Update(project);
+        }
+
       await _context.SaveChangesAsync();
       return RedirectToAction(nameof(Index));
     }
@@ -147,6 +158,11 @@ public class ProjectBillController : Controller
 
     if (projectBill.id_project_bill != 0)
     {
+
+       var billBeforeU = await _context.ProjectBills
+    .AsNoTracking() // importante para evitar conflicto de tracking
+    .FirstOrDefaultAsync(c => c.id_bill == projectBill.id_bill);
+
       try
       {
         var projectBillModel = _context.ProjectBills.Find(projectBill.id_project_bill);
@@ -158,6 +174,17 @@ public class ProjectBillController : Controller
 
 
         _context.Update(projectBillModel);
+
+        var project = await _context.Projects
+            .FirstOrDefaultAsync(p => p.id_project == projectBill.id_project);
+        if (project != null)
+        {
+          double diff = projectBill.amount - (billBeforeU != null ? billBeforeU.amount : 0);
+          project.cost += diff;
+          _context.Update(project);
+
+        }
+
         await _context.SaveChangesAsync();
       }
       catch (DbUpdateConcurrencyException)
@@ -225,6 +252,15 @@ public class ProjectBillController : Controller
             {
                 _context.ProjectBills.Remove(projectBill);
             }
+            //actualizar el costo del proyecto
+       var project = await _context.Projects
+            .FirstOrDefaultAsync(p => p.id_project == projectBill.id_project);
+
+        if (project != null)
+        {
+            project.cost -= projectBill.amount;
+            _context.Update(project);
+        }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

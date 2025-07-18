@@ -148,3 +148,4 @@ D:\Work\Programacion\.net core\ThomasConstruction\ThomasConstruction\obj\Debug\n
 D:\Work\Programacion\.net core\ThomasConstruction\ThomasConstruction\obj\Debug\net9.0\compressed\mlg4cvvn1k-qc82pskj0g.gz
 D:\Work\Programacion\.net core\ThomasConstruction\ThomasConstruction\obj\Debug\net9.0\compressed\01hnkncdyt-8rul5e3bii.gz
 D:\Work\Programacion\.net core\ThomasConstruction\ThomasConstruction\obj\Debug\net9.0\compressed\nefnjsjp5u-p5i2ukdb5a.gz
+D:\Work\Programacion\.net core\ThomasConstruction\ThomasConstruction\bin\Debug\net9.0\Newtonsoft.Json.dll

@@ -25,7 +25,7 @@ namespace ThomasConstruction.Models
         public double? downpayment { get; set; } = 0;
 
         [DataType(DataType.Currency)]
-        [Display(Name = "Budget")]
+        [Display(Name = "Initial Budget")]
         public double budget { get; set; }
 
          [Display(Name = "Total Budget")]

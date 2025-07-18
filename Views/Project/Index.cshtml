@@ -1,10 +1,10 @@
-@model IEnumerable<ThomasConstruction.Models.ProjectModel>
+@model IEnumerable<ThomasConstruction.ViewModels.ProjectIndexViewModel>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h3>Projects View</h3>
+<h3>Projects Information</h3>
 
 <p>
     <a class="btn btn-secondary" asp-action="Create">Create New</a>
@@ -20,27 +20,70 @@
     <strong> @Html.DisplayNameFor(model => model.project_name)</strong>: @Html.DisplayFor(modelItem => item.project_name)
   </div>
   <div class="card-body">
-    <h4 class="card-title">Proyect Details</h4>
-    <h6 class="card-title pricing-card-title">   
-        @Html.DisplayNameFor(model => model.budget): @Html.DisplayFor(modelItem => item.budget)
-    </h6>
-    <h6 class="card-title pricing-card-title">   
-        @Html.DisplayNameFor(model => model.cost): @Html.DisplayFor(modelItem => item.cost)
-    </h6>
-    <h6 class="card-title pricing-card-title">   
-        @Html.DisplayNameFor(model => model.profit): @Html.DisplayFor(modelItem => item.profit)
-    </h6>
-    <h6 class="card-title pricing-card-title">   
+    <div class="bg-secondary text-white text-center py-2 rounded-top">
+    <h5 class="m-0">Project Details</h5>
+</div>
+      <div class="text-end">  
+     <h6 class="card-title pricing-card-title">   
         @Html.DisplayNameFor(model => model.project_date): @Html.DisplayFor(modelItem => item.project_date)
     </h6>
+    </div>
     <h6 class="card-title pricing-card-title">   
-        @Html.DisplayNameFor(model => model.downpayment): @Html.DisplayFor(modelItem => item.downpayment)
+        @Html.DisplayNameFor(model => model.budget): <span  class="text-primary"">@Html.DisplayFor(modelItem => item.budget)</span>
     </h6>
+    <h6>
+      @Html.DisplayNameFor(model => model.totalChangeOrders): 
+       <span class="text-primary"> @Html.DisplayFor(modelItem => item.totalChangeOrders)</span>
+        </h6>
+
+     <h6 class="card-title pricing-card-title">   
+        @Html.DisplayNameFor(model => model.total_budget): <span  class="bg-primary text-white px-0">@Html.DisplayFor(modelItem => item.total_budget)
+    </span></h6>
+
+    <h6 class="card-title pricing-card-title">   
+        @Html.DisplayNameFor(model => model.cost): <span class="bg-danger text-white px-2">
+            @Html.DisplayFor(modelItem => item.cost)</span>
+    </h6>
+    <ul class="mb-2 ms-3" style="list-style-type: circle;">
+    <li >
+        <strong>@Html.DisplayNameFor(model => model.totalBills)</strong>: 
+        <span class="text-danger">@Html.DisplayFor(modelItem => item.totalBills)</span>
+       
+    </li>
+    <li>
+           <strong>@Html.DisplayNameFor(model => model.totalReceipts)</strong>: 
+       <span class="text-danger"> @Html.DisplayFor(modelItem => item.totalReceipts)</span>
+    </li>
+    <li>
+           <strong>@Html.DisplayNameFor(model => model.totalSupplies)</strong>: 
+        <span class="text-danger">@Html.DisplayFor(modelItem => item.totalSupplies)</span>
+    </li>
+  
+    </ul>
+   
+   
+    <h6 class="card-title pricing-card-title">   
+        @Html.DisplayNameFor(model => model.downpayment):
+        <span class="text-warning"> @Html.DisplayFor(modelItem => item.downpayment)</span>
+    </h6>
+
+     <h6 class="card-title pricing-card-title">   
+        @Html.DisplayNameFor(model => model.totalPayments):<span class="bg-warning text-dark px-0">
+             @Html.DisplayFor(modelItem => item.totalPayments)</span>
+    </h6>
+
+     <h6 class="card-title pricing-card-title">   
+        @Html.DisplayNameFor(model => model.profit): 
+         <span class="@(item.profit < 0 ? "bg-warning text-white px-0" : "bg-success text-white px-0")">
+        @Html.DisplayFor(modelItem => item.profit)</span>
+    </h6>
+    <div class="text-end">
     <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.id_project">Delete</a> |
      <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.id_project">Edit</a>
+     </div>
   </div>
   <div class="card-footer text-body-secondary">
-      <strong>@Html.DisplayNameFor(model => model.customer.customer_name)</strong>: @Html.DisplayFor(modelItem => item.customer.customer_name)
+      <strong>@Html.DisplayNameFor(model => model.customer)</strong>: @Html.DisplayFor(modelItem => item.customer)
   </div>
   </div>
   </div>

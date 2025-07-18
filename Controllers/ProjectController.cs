@@ -23,9 +23,44 @@ public class ProjectController : Controller
   public async Task<IActionResult> Index()
   {
 
-    return _context.Projects != null ?
-                              View(await _context.Projects.Include(c => c.customer).ToListAsync()) :
-                                Problem("Entity set 'ApplicationDbContext.Project'  is null.");
+    //  return _context.Projects != null ?
+    //    View(await _context.Projects.Include(c => c.customer).ToListAsync()) :
+    //    Problem("Entity set 'ApplicationDbContext.Project'  is null.");
+                            
+         var projects = await _context.Projects
+        .Select(p => new ProjectIndexViewModel
+        {
+          id_project = p.id_project,
+          project_name = p.project_name,
+          project_date = p.project_date,
+          customer = p.customer.customer_name,
+          budget = p.budget,
+          cost = p.cost,
+          profit = p.profit,
+          downpayment = p.downpayment,
+          total_budget = p.total_budget,
+          totalBills = _context.ProjectBills
+                .Where(b => b.id_project == p.id_project)
+                .Sum(b => (double?)b.amount) ?? 0,
+          totalReceipts = _context.Receipts
+                .Where(b => b.id_project == p.id_project)
+                .Sum(b => (double?)b.amount) ?? 0,
+          totalSupplies = _context.Supplies
+                .Where(b => b.id_project == p.id_project)
+                .Sum(b => (double?)b.amount) ?? 0,
+          totalChangeOrders = _context.ChangeOrders
+                .Where(b => b.id_project == p.id_project)
+                .Sum(b => (double?)b.amount) ?? 0,
+          totalPayments = + p.downpayment  + (_context.Payments
+                .Where(b => b.id_project == p.id_project)
+                .Sum(b => (double?)b.amount) ?? 0)              
+
+        })
+        .ToListAsync();
+      
+        
+
+    return View(projects);                    
 
   }
 

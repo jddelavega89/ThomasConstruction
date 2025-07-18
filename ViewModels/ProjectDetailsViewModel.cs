@@ -15,6 +15,7 @@ namespace ThomasConstruction.ViewModels
         required
         public string project_name { get; set; }
 
+        
         [Display(Name = "Profit")]
         [DataType(DataType.Currency)]
         public double? profit { get; set; }
