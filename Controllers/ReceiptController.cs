@@ -4,9 +4,11 @@ using ThomasConstruction.Models;
 using ThomasConstruction.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ThomasConstruction.Controllers;
 
+[Authorize]
 public class ReceiptController : Controller
 {
 
@@ -51,15 +53,15 @@ public class ReceiptController : Controller
     {
       _context.Add(receipt);
 
-    //actualizar el costo del proyecto
-       var project = await _context.Projects
-            .FirstOrDefaultAsync(p => p.id_project == receipt.id_project);
+      //actualizar el costo del proyecto
+      var project = await _context.Projects
+           .FirstOrDefaultAsync(p => p.id_project == receipt.id_project);
 
-        if (project != null)
-        {
-            project.cost += receipt.amount;
-            _context.Update(project);
-        }
+      if (project != null)
+      {
+        project.cost += receipt.amount;
+        _context.Update(project);
+      }
 
       await _context.SaveChangesAsync();
       return RedirectToAction(nameof(Index));
@@ -86,7 +88,7 @@ public class ReceiptController : Controller
 
     var viewModel = new ReceiptViewModel
     {
-      id_receipt = receipt.id_receipt, 
+      id_receipt = receipt.id_receipt,
       receipt_date = receipt.receipt_date,
       amount = receipt.amount,
       details = receipt.details,
@@ -116,12 +118,12 @@ public class ReceiptController : Controller
       return NotFound();
     }
 
-   if (receipt.id_receipt != 0)
+    if (receipt.id_receipt != 0)
     {
-      
-       var receiptBeforeU = await _context.Receipts
-    .AsNoTracking() // importante para evitar conflicto de tracking
-    .FirstOrDefaultAsync(c => c.id_receipt == receipt.id_receipt);
+
+      var receiptBeforeU = await _context.Receipts
+   .AsNoTracking() // importante para evitar conflicto de tracking
+   .FirstOrDefaultAsync(c => c.id_receipt == receipt.id_receipt);
 
       try
       {
@@ -134,8 +136,8 @@ public class ReceiptController : Controller
 
         _context.Update(receiptModel);
 
-         var project = await _context.Projects
-            .FirstOrDefaultAsync(p => p.id_project == receipt.id_project);
+        var project = await _context.Projects
+           .FirstOrDefaultAsync(p => p.id_project == receipt.id_project);
         if (project != null)
         {
           double diff = receipt.amount - (receiptBeforeU != null ? receiptBeforeU.amount : 0);
@@ -171,93 +173,93 @@ public class ReceiptController : Controller
 
 
   }
-  
-
-    public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Receipts == null)
-            {
-                return NotFound();
-            }
-
-            var receipt = await _context.Receipts
-                .FirstOrDefaultAsync(m => m.id_receipt == id);
-            if (receipt == null)
-            {
-                return NotFound();
-            }
-
-             var viewModel = new ReceiptDetailsViewModel
-             {
-               id_receipt = receipt.id_receipt,
-               receipt_date = receipt.receipt_date,
-               amount = receipt.amount,
-               details = receipt.details,
-               project = _context.Projects.Find(receipt.id_project)?.project_name
-                                      
-             };
 
 
+  public async Task<IActionResult> Details(int? id)
+  {
+    if (id == null || _context.Receipts == null)
+    {
+      return NotFound();
+    }
+
+    var receipt = await _context.Receipts
+        .FirstOrDefaultAsync(m => m.id_receipt == id);
+    if (receipt == null)
+    {
+      return NotFound();
+    }
+
+    var viewModel = new ReceiptDetailsViewModel
+    {
+      id_receipt = receipt.id_receipt,
+      receipt_date = receipt.receipt_date,
+      amount = receipt.amount,
+      details = receipt.details,
+      project = _context.Projects.Find(receipt.id_project)?.project_name
+
+    };
 
 
-         return View(viewModel);
-        }
 
 
-         // GET: Receipt/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Receipts == null)
-            {
-                return NotFound();
-            }
+    return View(viewModel);
+  }
 
-            var receipt = await _context.Receipts.Include(c => c.project)
-                .FirstOrDefaultAsync(m => m.id_receipt == id);
-            if (receipt == null)
-            {
-                return NotFound();
-            }
 
-            return View(receipt);
-        }
+  // GET: Receipt/Delete/5
+  public async Task<IActionResult> Delete(int? id)
+  {
+    if (id == null || _context.Receipts == null)
+    {
+      return NotFound();
+    }
 
-        // POST: Receipt/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Receipts == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Receipt'  is null.");
-            }
-            var receipt = await _context.Receipts.FindAsync(id);
-            if (receipt != null)
-            {
-                _context.Receipts.Remove(receipt);
-            }
+    var receipt = await _context.Receipts.Include(c => c.project)
+        .FirstOrDefaultAsync(m => m.id_receipt == id);
+    if (receipt == null)
+    {
+      return NotFound();
+    }
 
-               //actualizar el costo del proyecto
-        var project = await _context.Projects
-            .FirstOrDefaultAsync(p => p.id_project == receipt.id_project);
+    return View(receipt);
+  }
 
-        if (project != null)
-        {
-            project.cost -= receipt.amount;
-            _context.Update(project);
-        }
-            
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        
-        
-        private bool ReceiptModelExists(int id)
-        {
-          return (_context.Receipts?.Any(e => e.id_receipt == id)).GetValueOrDefault();
-        }
-          
+  // POST: Receipt/Delete/5
+  [HttpPost, ActionName("Delete")]
+  [ValidateAntiForgeryToken]
+  public async Task<IActionResult> DeleteConfirmed(int id)
+  {
+    if (_context.Receipts == null)
+    {
+      return Problem("Entity set 'ApplicationDbContext.Receipt'  is null.");
+    }
+    var receipt = await _context.Receipts.FindAsync(id);
+    if (receipt != null)
+    {
+      _context.Receipts.Remove(receipt);
+    }
+
+    //actualizar el costo del proyecto
+    var project = await _context.Projects
+        .FirstOrDefaultAsync(p => p.id_project == receipt.id_project);
+
+    if (project != null)
+    {
+      project.cost -= receipt.amount;
+      _context.Update(project);
+    }
+
+
+    await _context.SaveChangesAsync();
+    return RedirectToAction(nameof(Index));
+  }
+
+
+  private bool ReceiptModelExists(int id)
+  {
+    return (_context.Receipts?.Any(e => e.id_receipt == id)).GetValueOrDefault();
+  }
+
 
 
 

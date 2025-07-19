@@ -4,9 +4,11 @@ using ThomasConstruction.Models;
 using ThomasConstruction.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ThomasConstruction.Controllers;
 
+[Authorize]
 public class PaymentController : Controller
 {
 
@@ -75,7 +77,7 @@ public class PaymentController : Controller
 
     var viewModel = new PaymentViewModel
     {
-      id_payment = payment.id_payment, 
+      id_payment = payment.id_payment,
       payment_date = payment.payment_date,
       amount = payment.amount,
       details = payment.details,
@@ -105,7 +107,7 @@ public class PaymentController : Controller
       return NotFound();
     }
 
-   if (payment.id_payment != 0)
+    if (payment.id_payment != 0)
     {
       try
       {
@@ -114,7 +116,7 @@ public class PaymentController : Controller
         paymentModel.id_project = payment.id_project!;
         paymentModel.amount = payment.amount;
         paymentModel.details = payment.details;
-               
+
 
         _context.Update(paymentModel);
         await _context.SaveChangesAsync();
@@ -144,82 +146,82 @@ public class PaymentController : Controller
 
 
   }
-  
-
-    public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Payments == null)
-            {
-                return NotFound();
-            }
-
-            var payment = await _context.Payments
-                .FirstOrDefaultAsync(m => m.id_payment == id);
-            if (payment == null)
-            {
-                return NotFound();
-            }
-
-             var viewModel = new PaymentDetailsViewModel
-             {
-               id_payment = payment.id_payment,
-               payment_date = payment.payment_date,
-               amount = payment.amount,
-               details = payment.details,
-               project = _context.Projects.Find(payment.id_project)?.project_name
-                                      
-             };
 
 
+  public async Task<IActionResult> Details(int? id)
+  {
+    if (id == null || _context.Payments == null)
+    {
+      return NotFound();
+    }
+
+    var payment = await _context.Payments
+        .FirstOrDefaultAsync(m => m.id_payment == id);
+    if (payment == null)
+    {
+      return NotFound();
+    }
+
+    var viewModel = new PaymentDetailsViewModel
+    {
+      id_payment = payment.id_payment,
+      payment_date = payment.payment_date,
+      amount = payment.amount,
+      details = payment.details,
+      project = _context.Projects.Find(payment.id_project)?.project_name
+
+    };
 
 
-         return View(viewModel);
-        }
 
 
-         // GET: Payment/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Payments == null)
-            {
-                return NotFound();
-            }
+    return View(viewModel);
+  }
 
-            var payment = await _context.Payments.Include(c => c.project)
-                .FirstOrDefaultAsync(m => m.id_payment == id);
-            if (payment == null)
-            {
-                return NotFound();
-            }
 
-            return View(payment);
-        }
+  // GET: Payment/Delete/5
+  public async Task<IActionResult> Delete(int? id)
+  {
+    if (id == null || _context.Payments == null)
+    {
+      return NotFound();
+    }
 
-        // POST: Payment/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Payments == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Payment'  is null.");
-            }
-            var payment = await _context.Payments.FindAsync(id);
-            if (payment != null)
-            {
-                _context.Payments.Remove(payment);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        
-        
-        private bool PaymentModelExists(int id)
-        {
-          return (_context.Payments?.Any(e => e.id_payment == id)).GetValueOrDefault();
-        }
-          
+    var payment = await _context.Payments.Include(c => c.project)
+        .FirstOrDefaultAsync(m => m.id_payment == id);
+    if (payment == null)
+    {
+      return NotFound();
+    }
+
+    return View(payment);
+  }
+
+  // POST: Payment/Delete/5
+  [HttpPost, ActionName("Delete")]
+  [ValidateAntiForgeryToken]
+  public async Task<IActionResult> DeleteConfirmed(int id)
+  {
+    if (_context.Payments == null)
+    {
+      return Problem("Entity set 'ApplicationDbContext.Payment'  is null.");
+    }
+    var payment = await _context.Payments.FindAsync(id);
+    if (payment != null)
+    {
+      _context.Payments.Remove(payment);
+    }
+
+    await _context.SaveChangesAsync();
+    return RedirectToAction(nameof(Index));
+  }
+
+
+  private bool PaymentModelExists(int id)
+  {
+    return (_context.Payments?.Any(e => e.id_payment == id)).GetValueOrDefault();
+  }
+
 
 
 

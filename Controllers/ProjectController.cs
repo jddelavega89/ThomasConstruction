@@ -8,7 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ThomasConstruction.Controllers;
 
-[Authorize(Roles = "Admin")]
+//[Authorize(Roles = "Admin")]
+[Authorize]
 public class ProjectController : Controller
 {
 
@@ -28,41 +29,41 @@ public class ProjectController : Controller
     //  return _context.Projects != null ?
     //    View(await _context.Projects.Include(c => c.customer).ToListAsync()) :
     //    Problem("Entity set 'ApplicationDbContext.Project'  is null.");
-                            
-         var projects = await _context.Projects
-        .Select(p => new ProjectIndexViewModel
-        {
-          id_project = p.id_project,
-          project_name = p.project_name,
-          project_date = p.project_date,
-          customer = p.customer.customer_name,
-          budget = p.budget,
-          cost = p.cost,
-          profit = p.profit,
-          downpayment = p.downpayment,
-          total_budget = p.total_budget,
-          totalBills = _context.ProjectBills
-                .Where(b => b.id_project == p.id_project)
-                .Sum(b => (double?)b.amount) ?? 0,
-          totalReceipts = _context.Receipts
-                .Where(b => b.id_project == p.id_project)
-                .Sum(b => (double?)b.amount) ?? 0,
-          totalSupplies = _context.Supplies
-                .Where(b => b.id_project == p.id_project)
-                .Sum(b => (double?)b.amount) ?? 0,
-          totalChangeOrders = _context.ChangeOrders
-                .Where(b => b.id_project == p.id_project)
-                .Sum(b => (double?)b.amount) ?? 0,
-          totalPayments = + p.downpayment  + (_context.Payments
-                .Where(b => b.id_project == p.id_project)
-                .Sum(b => (double?)b.amount) ?? 0)              
 
-        })
-        .ToListAsync();
-      
-        
+    var projects = await _context.Projects
+   .Select(p => new ProjectIndexViewModel
+   {
+     id_project = p.id_project,
+     project_name = p.project_name,
+     project_date = p.project_date,
+     customer = p.customer.customer_name,
+     budget = p.budget,
+     cost = p.cost,
+     profit = p.profit,
+     downpayment = p.downpayment,
+     total_budget = p.total_budget,
+     totalBills = _context.ProjectBills
+           .Where(b => b.id_project == p.id_project)
+           .Sum(b => (double?)b.amount) ?? 0,
+     totalReceipts = _context.Receipts
+           .Where(b => b.id_project == p.id_project)
+           .Sum(b => (double?)b.amount) ?? 0,
+     totalSupplies = _context.Supplies
+           .Where(b => b.id_project == p.id_project)
+           .Sum(b => (double?)b.amount) ?? 0,
+     totalChangeOrders = _context.ChangeOrders
+           .Where(b => b.id_project == p.id_project)
+           .Sum(b => (double?)b.amount) ?? 0,
+     totalPayments = +p.downpayment + (_context.Payments
+           .Where(b => b.id_project == p.id_project)
+           .Sum(b => (double?)b.amount) ?? 0)
 
-    return View(projects);                    
+   })
+   .ToListAsync();
+
+
+
+    return View(projects);
 
   }
 
@@ -145,9 +146,9 @@ public class ProjectController : Controller
       return NotFound();
     }
 
-   if (!string.IsNullOrWhiteSpace(project.project_name) && project.id_customer != 0)
+    if (!string.IsNullOrWhiteSpace(project.project_name) && project.id_customer != 0)
     {
-      
+
       var changeOrders = await _context.ChangeOrders
                 .Where(c => c.id_project == project.id_project)
                 .ToListAsync();
@@ -193,109 +194,109 @@ public class ProjectController : Controller
 
 
   }
-  
-
-    public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Projects == null)
-            {
-                return NotFound();
-            }
-
-            var project = await _context.Projects
-                .FirstOrDefaultAsync(m => m.id_project == id);
-            if (project == null)
-            {
-                return NotFound();
-            }
-
-             var viewModel = new ProjectDetailsViewModel
-             {
-               id_project = project.id_project,
-               project_name = project.project_name,
-               budget = project.budget,
-               cost = project.cost,
-               profit = project.profit,
-               downpayment = project.downpayment,
-               project_date = project.project_date,
-               customer = _context.Customers.Find(project.id_customer)?.customer_name
-                                      
-             };
 
 
+  public async Task<IActionResult> Details(int? id)
+  {
+    if (id == null || _context.Projects == null)
+    {
+      return NotFound();
+    }
+
+    var project = await _context.Projects
+        .FirstOrDefaultAsync(m => m.id_project == id);
+    if (project == null)
+    {
+      return NotFound();
+    }
+
+    var viewModel = new ProjectDetailsViewModel
+    {
+      id_project = project.id_project,
+      project_name = project.project_name,
+      budget = project.budget,
+      cost = project.cost,
+      profit = project.profit,
+      downpayment = project.downpayment,
+      project_date = project.project_date,
+      customer = _context.Customers.Find(project.id_customer)?.customer_name
+
+    };
 
 
-         return View(viewModel);
-        }
 
 
-         // GET: Project/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Projects == null)
-            {
-                return NotFound();
-            }
+    return View(viewModel);
+  }
 
-            var project = await _context.Projects.Include(c => c.customer)
-                .FirstOrDefaultAsync(m => m.id_project == id);
-            if (project == null)
-            {
-                return NotFound();
-            }
 
-            return View(project);
-        }
+  // GET: Project/Delete/5
+  public async Task<IActionResult> Delete(int? id)
+  {
+    if (id == null || _context.Projects == null)
+    {
+      return NotFound();
+    }
 
-        // POST: Project/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Projects == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Project'  is null.");
-            }
+    var project = await _context.Projects.Include(c => c.customer)
+        .FirstOrDefaultAsync(m => m.id_project == id);
+    if (project == null)
+    {
+      return NotFound();
+    }
+
+    return View(project);
+  }
+
+  // POST: Project/Delete/5
+  [HttpPost, ActionName("Delete")]
+  [ValidateAntiForgeryToken]
+  public async Task<IActionResult> DeleteConfirmed(int id)
+  {
+    if (_context.Projects == null)
+    {
+      return Problem("Entity set 'ApplicationDbContext.Project'  is null.");
+    }
     //var project = await _context.Projects.FindAsync(id);
-            
-          var project = await _context.Projects
-        .Include(p => p.payments)
-        .Include(p => p.projectBill)
-        .Include(p => p.receipt)
-        .Include(p => p.supplie)
-        .Include(p => p.changeOrder)
-        .FirstOrDefaultAsync(p => p.id_project == id);
-            if (project != null)
+
+    var project = await _context.Projects
+  .Include(p => p.payments)
+  .Include(p => p.projectBill)
+  .Include(p => p.receipt)
+  .Include(p => p.supplie)
+  .Include(p => p.changeOrder)
+  .FirstOrDefaultAsync(p => p.id_project == id);
+    if (project != null)
     {
       //debo buscar todos los elementos aosciados al proywecto y eliminarlos
       if (project.payments != null)
         _context.Payments.RemoveRange(project.payments);
 
       if (project.projectBill != null)
-        _context.ProjectBills.RemoveRange(project.projectBill);  
+        _context.ProjectBills.RemoveRange(project.projectBill);
 
-       if (project.receipt != null)
-        _context.Receipts.RemoveRange(project.receipt);  
+      if (project.receipt != null)
+        _context.Receipts.RemoveRange(project.receipt);
 
-       if (project.supplie != null)
-        _context.Supplies.RemoveRange(project.supplie);     
+      if (project.supplie != null)
+        _context.Supplies.RemoveRange(project.supplie);
 
-         if (project.changeOrder != null)
-        _context.ChangeOrders.RemoveRange(project.changeOrder);      
+      if (project.changeOrder != null)
+        _context.ChangeOrders.RemoveRange(project.changeOrder);
 
       _context.Projects.Remove(project);
     }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        
-        
-        private bool ProjectModelExists(int id)
+
+    await _context.SaveChangesAsync();
+    return RedirectToAction(nameof(Index));
+  }
+
+
+  private bool ProjectModelExists(int id)
   {
     return (_context.Projects?.Any(e => e.id_project == id)).GetValueOrDefault();
   }
-    
+
 
 
 

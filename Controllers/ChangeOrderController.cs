@@ -4,9 +4,11 @@ using ThomasConstruction.Models;
 using ThomasConstruction.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ThomasConstruction.Controllers;
 
+[Authorize]
 public class ChangeOrderController : Controller
 {
 
@@ -51,15 +53,15 @@ public class ChangeOrderController : Controller
     {
       _context.Add(changeOrder);
 
-       // Buscar proyecto asociado y actualizar su budget_total
-        var project = await _context.Projects
-            .FirstOrDefaultAsync(p => p.id_project == changeOrder.id_project);
+      // Buscar proyecto asociado y actualizar su budget_total
+      var project = await _context.Projects
+          .FirstOrDefaultAsync(p => p.id_project == changeOrder.id_project);
 
-        if (project != null)
-        {
-            project.total_budget += changeOrder.amount;
-            _context.Update(project);
-        }
+      if (project != null)
+      {
+        project.total_budget += changeOrder.amount;
+        _context.Update(project);
+      }
 
       await _context.SaveChangesAsync();
       return RedirectToAction(nameof(Index));
@@ -86,7 +88,7 @@ public class ChangeOrderController : Controller
 
     var viewModel = new ChangeOrderViewModel
     {
-      id_change = changeOrder.id_change, 
+      id_change = changeOrder.id_change,
       change_date = changeOrder.change_date,
       amount = changeOrder.amount,
       details = changeOrder.details,
@@ -116,7 +118,7 @@ public class ChangeOrderController : Controller
       return NotFound();
     }
 
-   if (changeOrder.id_change != 0)
+    if (changeOrder.id_change != 0)
     {
       try
       {
@@ -147,7 +149,7 @@ public class ChangeOrderController : Controller
           _context.Update(project);
 
         }
-         await _context.SaveChangesAsync(); 
+        await _context.SaveChangesAsync();
 
       }
       catch (DbUpdateConcurrencyException)
@@ -175,94 +177,94 @@ public class ChangeOrderController : Controller
 
 
   }
-  
-
-    public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.ChangeOrders == null)
-            {
-                return NotFound();
-            }
-
-            var changeOrder = await _context.ChangeOrders
-                .FirstOrDefaultAsync(m => m.id_change == id);
-            if (changeOrder == null)
-            {
-                return NotFound();
-            }
-
-             var viewModel = new ChangeOrderDetailsViewModel
-             {
-               id_change = changeOrder.id_change,
-               change_date = changeOrder.change_date,
-               amount = changeOrder.amount,
-               details = changeOrder.details,
-               project = _context.Projects.Find(changeOrder.id_project)?.project_name
-                                      
-             };
 
 
+  public async Task<IActionResult> Details(int? id)
+  {
+    if (id == null || _context.ChangeOrders == null)
+    {
+      return NotFound();
+    }
+
+    var changeOrder = await _context.ChangeOrders
+        .FirstOrDefaultAsync(m => m.id_change == id);
+    if (changeOrder == null)
+    {
+      return NotFound();
+    }
+
+    var viewModel = new ChangeOrderDetailsViewModel
+    {
+      id_change = changeOrder.id_change,
+      change_date = changeOrder.change_date,
+      amount = changeOrder.amount,
+      details = changeOrder.details,
+      project = _context.Projects.Find(changeOrder.id_project)?.project_name
+
+    };
 
 
-         return View(viewModel);
-        }
 
 
-         // GET: ChangeOrder/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.ChangeOrders == null)
-            {
-                return NotFound();
-            }
+    return View(viewModel);
+  }
 
-            var changeOrder = await _context.ChangeOrders.Include(c => c.project)
-                .FirstOrDefaultAsync(m => m.id_change == id);
-            if (changeOrder == null)
-            {
-                return NotFound();
-            }
 
-            return View(changeOrder);
-        }
+  // GET: ChangeOrder/Delete/5
+  public async Task<IActionResult> Delete(int? id)
+  {
+    if (id == null || _context.ChangeOrders == null)
+    {
+      return NotFound();
+    }
 
-        // POST: ChangeOrder/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.ChangeOrders == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.ChangeOrder'  is null.");
-            }
-            var changeOrder = await _context.ChangeOrders.FindAsync(id);
+    var changeOrder = await _context.ChangeOrders.Include(c => c.project)
+        .FirstOrDefaultAsync(m => m.id_change == id);
+    if (changeOrder == null)
+    {
+      return NotFound();
+    }
+
+    return View(changeOrder);
+  }
+
+  // POST: ChangeOrder/Delete/5
+  [HttpPost, ActionName("Delete")]
+  [ValidateAntiForgeryToken]
+  public async Task<IActionResult> DeleteConfirmed(int id)
+  {
+    if (_context.ChangeOrders == null)
+    {
+      return Problem("Entity set 'ApplicationDbContext.ChangeOrder'  is null.");
+    }
+    var changeOrder = await _context.ChangeOrders.FindAsync(id);
     if (changeOrder != null)
     {
       _context.ChangeOrders.Remove(changeOrder);
       //rebajar la orden del budget total
-              var project = await _context.Projects
-            .FirstOrDefaultAsync(p => p.id_project == changeOrder.id_project);
+      var project = await _context.Projects
+    .FirstOrDefaultAsync(p => p.id_project == changeOrder.id_project);
 
-        if (project != null)
-        {
-           project.total_budget -= changeOrder.amount ;
-          _context.Update(project);
-         
-        }
-                
+      if (project != null)
+      {
+        project.total_budget -= changeOrder.amount;
+        _context.Update(project);
+
+      }
+
 
     }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        
-        
-        private bool ChangeOrderModelExists(int id)
-        {
-          return (_context.ChangeOrders?.Any(e => e.id_change == id)).GetValueOrDefault();
-        }
-          
+
+    await _context.SaveChangesAsync();
+    return RedirectToAction(nameof(Index));
+  }
+
+
+  private bool ChangeOrderModelExists(int id)
+  {
+    return (_context.ChangeOrders?.Any(e => e.id_change == id)).GetValueOrDefault();
+  }
+
 
 
 

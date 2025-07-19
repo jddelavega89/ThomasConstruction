@@ -4,9 +4,11 @@ using ThomasConstruction.Models;
 using ThomasConstruction.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ThomasConstruction.Controllers;
 
+[Authorize]
 public class ProjectBillController : Controller
 {
 
@@ -51,14 +53,14 @@ public class ProjectBillController : Controller
       _context.Add(projectBill);
 
       //actualizar el costo del proyecto
-       var project = await _context.Projects
-            .FirstOrDefaultAsync(p => p.id_project == projectBill.id_project);
+      var project = await _context.Projects
+           .FirstOrDefaultAsync(p => p.id_project == projectBill.id_project);
 
-        if (project != null)
-        {
-            project.cost += projectBill.amount;
-            _context.Update(project);
-        }
+      if (project != null)
+      {
+        project.cost += projectBill.amount;
+        _context.Update(project);
+      }
 
       await _context.SaveChangesAsync();
       return RedirectToAction(nameof(Index));
@@ -159,9 +161,9 @@ public class ProjectBillController : Controller
     if (projectBill.id_project_bill != 0)
     {
 
-       var billBeforeU = await _context.ProjectBills
-    .AsNoTracking() // importante para evitar conflicto de tracking
-    .FirstOrDefaultAsync(c => c.id_bill == projectBill.id_bill);
+      var billBeforeU = await _context.ProjectBills
+   .AsNoTracking() // importante para evitar conflicto de tracking
+   .FirstOrDefaultAsync(c => c.id_bill == projectBill.id_bill);
 
       try
       {
@@ -207,7 +209,7 @@ public class ProjectBillController : Controller
       Text = s.project_name
     }).ToList();
 
-     projectBill.bills = _context.Bills.Select(s => new SelectListItem
+    projectBill.bills = _context.Bills.Select(s => new SelectListItem
     {
       Value = s.id_bill.ToString(),
       Text = s.bill_name
@@ -217,65 +219,65 @@ public class ProjectBillController : Controller
 
 
 
-  } 
+  }
 
 
-   // GET: ProjectBill/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.ProjectBills == null)
-            {
-                return NotFound();
-            }
+  // GET: ProjectBill/Delete/5
+  public async Task<IActionResult> Delete(int? id)
+  {
+    if (id == null || _context.ProjectBills == null)
+    {
+      return NotFound();
+    }
 
-            var projectBill = await _context.ProjectBills.Include(c => c.project).Include(c => c.bill)
-                .FirstOrDefaultAsync(m => m.id_project_bill == id);
-            if (projectBill == null)
-            {
-                return NotFound();
-            }
+    var projectBill = await _context.ProjectBills.Include(c => c.project).Include(c => c.bill)
+        .FirstOrDefaultAsync(m => m.id_project_bill == id);
+    if (projectBill == null)
+    {
+      return NotFound();
+    }
 
-            return View(projectBill);
-        }
+    return View(projectBill);
+  }
 
-        // POST: Payment/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.ProjectBills == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Bills'  is null.");
-            }
-            var projectBill = await _context.ProjectBills.FindAsync(id);
-            if (projectBill != null)
-            {
-                _context.ProjectBills.Remove(projectBill);
-            }
-            //actualizar el costo del proyecto
-       var project = await _context.Projects
-            .FirstOrDefaultAsync(p => p.id_project == projectBill.id_project);
+  // POST: Payment/Delete/5
+  [HttpPost, ActionName("Delete")]
+  [ValidateAntiForgeryToken]
+  public async Task<IActionResult> DeleteConfirmed(int id)
+  {
+    if (_context.ProjectBills == null)
+    {
+      return Problem("Entity set 'ApplicationDbContext.Bills'  is null.");
+    }
+    var projectBill = await _context.ProjectBills.FindAsync(id);
+    if (projectBill != null)
+    {
+      _context.ProjectBills.Remove(projectBill);
+    }
+    //actualizar el costo del proyecto
+    var project = await _context.Projects
+         .FirstOrDefaultAsync(p => p.id_project == projectBill.id_project);
 
-        if (project != null)
-        {
-            project.cost -= projectBill.amount;
-            _context.Update(project);
-        }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-              
-  
-         private bool ProjectBillModelExists(int id)
+    if (project != null)
+    {
+      project.cost -= projectBill.amount;
+      _context.Update(project);
+    }
+
+    await _context.SaveChangesAsync();
+    return RedirectToAction(nameof(Index));
+  }
+
+
+  private bool ProjectBillModelExists(int id)
   {
     return (_context.ProjectBills?.Any(e => e.id_project_bill == id)).GetValueOrDefault();
   }
-    
 
 
 
-  
+
+
 
 
 }

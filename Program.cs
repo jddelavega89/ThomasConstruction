@@ -11,7 +11,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+builder.Services.AddIdentity<IdentityUser,IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
 })
@@ -19,7 +19,53 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+});
+
+builder.Services.AddRazorPages();
+
 var app = builder.Build();
+
+/*
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+
+    string userName  = "useradmin";
+    
+    string password = "Password123!"; // Asegúrate que cumpla con los requisitos
+
+    var existingUser = await userManager.FindByNameAsync(userName);
+    if (existingUser == null)
+    {
+        var user = new IdentityUser { UserName = userName, EmailConfirmed = true };
+        var result = await userManager.CreateAsync(user, password);
+
+        if (result.Succeeded)
+        {
+            Console.WriteLine("Usuario creado correctamente");
+            
+        }
+        else
+        {
+            Console.WriteLine("Error al crear el usuario:");
+            foreach (var error in result.Errors)
+            {
+                Console.WriteLine($"- {error.Description}");
+            }
+        }
+    }
+    else
+    {
+        Console.WriteLine("El usuario ya existe.");
+    }
+}
+*/
+
 
 
 
@@ -32,6 +78,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles(); // 
 app.UseRouting();
 
 app.UseAuthentication();

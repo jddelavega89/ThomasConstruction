@@ -4,9 +4,11 @@ using ThomasConstruction.Models;
 using ThomasConstruction.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ThomasConstruction.Controllers;
 
+[Authorize]
 public class CustomerController : Controller
 {
 
@@ -106,7 +108,7 @@ public class CustomerController : Controller
       return NotFound();
     }
 
-   if (!string.IsNullOrWhiteSpace(customer.customer_name) && customer.id_state != 0)
+    if (!string.IsNullOrWhiteSpace(customer.customer_name) && customer.id_state != 0)
     {
       try
       {
@@ -117,7 +119,7 @@ public class CustomerController : Controller
         customerModel.address = customer?.address;
         customerModel.zip_code = customer?.zip_code;
         customerModel.id_state = customer.id_state!;
-        
+
 
         _context.Update(customerModel);
         await _context.SaveChangesAsync();
@@ -147,95 +149,95 @@ public class CustomerController : Controller
 
 
   }
-  
-
-    public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Customers == null)
-            {
-                return NotFound();
-            }
-
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.id_customer == id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
-
-             var viewModel = new CustomerDetailsViewModel
-             {
-               id_customer = customer.id_customer,
-               customer_name = customer.customer_name,
-               phone = customer.phone,
-               address = customer.address,
-               city = customer.city,
-               zip_code = customer.zip_code,
-               // id_state = customer.id_state, // valor que debe aparecer seleccionado
-               state = _context.States.Find(customer.id_state)?.state_name
-                                      
-                };
 
 
+  public async Task<IActionResult> Details(int? id)
+  {
+    if (id == null || _context.Customers == null)
+    {
+      return NotFound();
+    }
+
+    var customer = await _context.Customers
+        .FirstOrDefaultAsync(m => m.id_customer == id);
+    if (customer == null)
+    {
+      return NotFound();
+    }
+
+    var viewModel = new CustomerDetailsViewModel
+    {
+      id_customer = customer.id_customer,
+      customer_name = customer.customer_name,
+      phone = customer.phone,
+      address = customer.address,
+      city = customer.city,
+      zip_code = customer.zip_code,
+      // id_state = customer.id_state, // valor que debe aparecer seleccionado
+      state = _context.States.Find(customer.id_state)?.state_name
+
+    };
 
 
-         return View(viewModel);
-        }
 
 
-         // GET: Customer/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Customers == null)
-            {
-                return NotFound();
-            }
+    return View(viewModel);
+  }
 
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.id_customer == id);
-            if (customer == null)
-            {
-                return NotFound();
-            }
 
-            return View(customer);
-        }
+  // GET: Customer/Delete/5
+  public async Task<IActionResult> Delete(int? id)
+  {
+    if (id == null || _context.Customers == null)
+    {
+      return NotFound();
+    }
 
-        // POST: Customers/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Customers == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Customers'  is null.");
-            }
+    var customer = await _context.Customers
+        .FirstOrDefaultAsync(m => m.id_customer == id);
+    if (customer == null)
+    {
+      return NotFound();
+    }
+
+    return View(customer);
+  }
+
+  // POST: Customers/Delete/5
+  [HttpPost, ActionName("Delete")]
+  [ValidateAntiForgeryToken]
+  public async Task<IActionResult> DeleteConfirmed(int id)
+  {
+    if (_context.Customers == null)
+    {
+      return Problem("Entity set 'ApplicationDbContext.Customers'  is null.");
+    }
     var customer = await _context.Customers.FindAsync(id);
     //validar que no este asociado a ningun proyecto
     if (_context.Projects.Any(c => c.id_customer == id))
     {
       // ModelState.AddModelError("", "No se puede eliminar el estado porque tiene clientes asociados.");
       //return View(customer); // o redirigir a Details u otra vista con mensaje
-       TempData["ErrorMessage"] = "No se puede eliminar porque hay clientes asociados a proyectos.";
+      TempData["ErrorMessage"] = "No se puede eliminar porque hay clientes asociados a proyectos.";
       return RedirectToAction("Details", new { id = id });
     }
 
-          
-            if (customer != null)
-            {
-                _context.Customers.Remove(customer);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        
-        
-        private bool CustomerModelExists(int id)
+
+    if (customer != null)
+    {
+      _context.Customers.Remove(customer);
+    }
+
+    await _context.SaveChangesAsync();
+    return RedirectToAction(nameof(Index));
+  }
+
+
+  private bool CustomerModelExists(int id)
   {
     return (_context.Customers?.Any(e => e.id_customer == id)).GetValueOrDefault();
   }
-    
+
 
 
 

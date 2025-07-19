@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ThomasConstruction.Controllers;
 
-[Authorize(Roles = "Admin")]
+[Authorize]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;

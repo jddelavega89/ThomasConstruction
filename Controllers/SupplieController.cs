@@ -4,9 +4,11 @@ using ThomasConstruction.Models;
 using ThomasConstruction.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ThomasConstruction.Controllers;
 
+[Authorize]
 public class SupplieController : Controller
 {
 
@@ -61,11 +63,11 @@ public class SupplieController : Controller
 
 
       _context.Add(supplieModel);
-       //actualizar el costo del proyecto
-       var project = await _context.Projects
-            .FirstOrDefaultAsync(p => p.id_project == supplie.id_project);
+      //actualizar el costo del proyecto
+      var project = await _context.Projects
+           .FirstOrDefaultAsync(p => p.id_project == supplie.id_project);
 
-        if (project != null)
+      if (project != null)
       {
         project.cost += supplie.amount;
         _context.Update(project);
@@ -166,9 +168,9 @@ public class SupplieController : Controller
     if (supplie.id_supplie != 0)
     {
 
-        var supplieBeforeU = await _context.Supplies
-    .AsNoTracking() // importante para evitar conflicto de tracking
-    .FirstOrDefaultAsync(c => c.id_supplie == supplie.id_supplie);
+      var supplieBeforeU = await _context.Supplies
+  .AsNoTracking() // importante para evitar conflicto de tracking
+  .FirstOrDefaultAsync(c => c.id_supplie == supplie.id_supplie);
 
       try
       {
@@ -219,54 +221,54 @@ public class SupplieController : Controller
 
 
   }
-  
-      // GET: Payment/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Supplies == null)
-            {
-                return NotFound();
-            }
 
-            var supplie = await _context.Supplies.Include(c => c.project)
-                .FirstOrDefaultAsync(m => m.id_supplie == id);
-            if (supplie == null)
-            {
-                return NotFound();
-            }
+  // GET: Payment/Delete/5
+  public async Task<IActionResult> Delete(int? id)
+  {
+    if (id == null || _context.Supplies == null)
+    {
+      return NotFound();
+    }
 
-            return View(supplie);
-        }
-  
-    // POST: Payment/Delete/5
+    var supplie = await _context.Supplies.Include(c => c.project)
+        .FirstOrDefaultAsync(m => m.id_supplie == id);
+    if (supplie == null)
+    {
+      return NotFound();
+    }
+
+    return View(supplie);
+  }
+
+  // POST: Payment/Delete/5
   [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Supplies == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Supplie'  is null.");
-            }
-            var supplie = await _context.Supplies.FindAsync(id);
-            if (supplie != null)
-            {
-                _context.Supplies.Remove(supplie);
-            }
-             //actualizar el costo del proyecto
-       var project = await _context.Projects
-            .FirstOrDefaultAsync(p => p.id_project == supplie.id_project);
+  [ValidateAntiForgeryToken]
+  public async Task<IActionResult> DeleteConfirmed(int id)
+  {
+    if (_context.Supplies == null)
+    {
+      return Problem("Entity set 'ApplicationDbContext.Supplie'  is null.");
+    }
+    var supplie = await _context.Supplies.FindAsync(id);
+    if (supplie != null)
+    {
+      _context.Supplies.Remove(supplie);
+    }
+    //actualizar el costo del proyecto
+    var project = await _context.Projects
+         .FirstOrDefaultAsync(p => p.id_project == supplie.id_project);
 
-        if (project != null)
-        {
-            project.cost -= supplie.amount;
-            _context.Update(project);
-        }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-        
-        
+    if (project != null)
+    {
+      project.cost -= supplie.amount;
+      _context.Update(project);
+    }
+
+    await _context.SaveChangesAsync();
+    return RedirectToAction(nameof(Index));
+  }
+
+
 
 
 
