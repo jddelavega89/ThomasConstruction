@@ -4,9 +4,11 @@ using ThomasConstruction.Models;
 using ThomasConstruction.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ThomasConstruction.Controllers;
 
+[Authorize(Roles = "Admin")]
 public class ProjectController : Controller
 {
 

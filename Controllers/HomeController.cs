@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using ThomasConstruction.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ThomasConstruction.Controllers;
 
+[Authorize(Roles = "Admin")]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
@@ -18,21 +20,22 @@ public class HomeController : Controller
         _context = context;
     }
 
+
     public async Task<IActionResult> Index()
     {
 
-         var projects = await _context.Projects.ToListAsync();
+        var projects = await _context.Projects.ToListAsync();
 
-    var projectNames = projects.Select(p => p.project_name).ToList();
-    var profits = projects.Select(p => p.profit).ToList();
-    var costs = projects.Select(p => p.cost).ToList();
+        var projectNames = projects.Select(p => p.project_name).ToList();
+        var profits = projects.Select(p => p.profit).ToList();
+        var costs = projects.Select(p => p.cost).ToList();
 
-    ViewBag.ProjectNames = JsonConvert.SerializeObject(projectNames);
-    ViewBag.Profits = JsonConvert.SerializeObject(profits);
-    ViewBag.Costs = JsonConvert.SerializeObject(costs);
+        ViewBag.ProjectNames = JsonConvert.SerializeObject(projectNames);
+        ViewBag.Profits = JsonConvert.SerializeObject(profits);
+        ViewBag.Costs = JsonConvert.SerializeObject(costs);
 
-    return View(projects); 
-       // return View();
+        return View(projects);
+        // return View();
     }
 
     public IActionResult Privacy()

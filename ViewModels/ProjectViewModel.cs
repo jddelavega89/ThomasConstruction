@@ -40,6 +40,7 @@ namespace ThomasConstruction.ViewModels
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
          public DateTime? project_date { get; set; } 
 
+         [Display(Name = "Customer")]
        public int id_customer { get; set; }
 
         public string? customer { get; set; }
