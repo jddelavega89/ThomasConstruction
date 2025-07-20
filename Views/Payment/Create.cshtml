@@ -6,6 +6,12 @@
 
 <h4>Create Payment</h4>
 
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
 
 <hr />
 <div class="row">

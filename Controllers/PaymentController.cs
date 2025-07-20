@@ -5,6 +5,7 @@ using ThomasConstruction.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
+using X.PagedList;
 
 namespace ThomasConstruction.Controllers;
 
@@ -20,24 +21,26 @@ public class PaymentController : Controller
   }
 
 
-  public async Task<IActionResult> Index(int? id_project)
+  public async Task<IActionResult> Index(int? id_project,int? page)
   {
 
-  // Verificamos si viene un nuevo valor desde el filtro
+    int pageNumber = page ?? 1;
+    int pageSize = 10;
+    // Verificamos si viene un nuevo valor desde el filtro
     if (Request.Query.ContainsKey("id_project"))
     {
-        if (id_project.HasValue)
-        {
-            HttpContext.Session.SetInt32("SelectedProjectId", id_project.Value);
-        }
-        else
-        {
-            HttpContext.Session.Remove("SelectedProjectId");
-        }
+      if (id_project.HasValue)
+      {
+        HttpContext.Session.SetInt32("SelectedProjectId", id_project.Value);
+      }
+      else
+      {
+        HttpContext.Session.Remove("SelectedProjectId");
+      }
     }
     else
     {
-        id_project = HttpContext.Session.GetInt32("SelectedProjectId");
+      id_project = HttpContext.Session.GetInt32("SelectedProjectId");
     }
 
     // Comienza la consulta como IQueryable
@@ -55,7 +58,7 @@ public class PaymentController : Controller
     ViewBag.SelectedProjectId = id_project;
 
     // Ejecuta la consulta
-    var payments = await paymentsQuery.ToListAsync();
+    var payments = await paymentsQuery.OrderBy(p => p.payment_date).ToPagedListAsync(pageNumber, pageSize);
 
     return View(payments);
    
@@ -86,9 +89,37 @@ public class PaymentController : Controller
     //if (ModelState.IsValid)
     if (payment.id_project != 0)
     {
-      _context.Add(payment);
-      await _context.SaveChangesAsync();
-      return RedirectToAction(nameof(Index));
+      //debo verificar que la suma de todos los pagos sea menor o igual que el total_bdget
+    // 1. Obtener el total de pagos del proyecto del nuevo pago
+var totalPaymentProject = await _context.Payments.AsNoTracking()
+    .Where(p => p.id_project == payment.id_project)
+    .SumAsync(p => p.amount);
+
+// 2. Obtener el presupuesto total del proyecto
+var totalBudgetProject = await _context.Projects
+    .Where(pr => pr.id_project == payment.id_project)
+    .Select(pr => pr.total_budget)
+   
+    .FirstOrDefaultAsync();
+
+// 3. Validar si se puede agregar el nuevo pago
+if ((totalPaymentProject + payment.amount) <= totalBudgetProject)
+{
+    _context.Add(payment);
+    await _context.SaveChangesAsync();
+    return RedirectToAction(nameof(Index));
+}
+else
+{
+     ViewBag.Projects = new SelectList(_context.Projects.ToList(), "id_project", "project_name");
+    TempData["ErrorMessage"] = "The payment exceeds the project's total budget.";
+    return View(payment);
+}
+
+
+
+
+    
     }
 
     ViewBag.Projects = new SelectList(_context.Projects.ToList(), "id_project", "project_name");

@@ -5,6 +5,7 @@ using ThomasConstruction.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
+using X.PagedList;
 
 namespace ThomasConstruction.Controllers;
 
@@ -22,11 +23,13 @@ public class CustomerController : Controller
 
 
 
-  public async Task<IActionResult> Index()
+  public async Task<IActionResult> Index(int? page)
   {
+ int pageNumber = page ?? 1;
+    int pageSize = 10;
 
     return _context.Customers != null ?
-                              View(await _context.Customers.Include(c => c.state).ToListAsync()) :
+                              View(await _context.Customers.Include(c => c.state).ToPagedListAsync(pageNumber, pageSize)) :
                                 Problem("Entity set 'ApplicationDbContext.Customers'  is null.");
 
   }

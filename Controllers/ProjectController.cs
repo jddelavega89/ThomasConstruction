@@ -54,7 +54,7 @@ public class ProjectController : Controller
      totalChangeOrders = _context.ChangeOrders
            .Where(b => b.id_project == p.id_project)
            .Sum(b => (double?)b.amount) ?? 0,
-     totalPayments = +p.downpayment + (_context.Payments
+     totalPayments =  (_context.Payments
            .Where(b => b.id_project == p.id_project)
            .Sum(b => (double?)b.amount) ?? 0)
 
