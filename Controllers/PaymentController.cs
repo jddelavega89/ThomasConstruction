@@ -20,14 +20,49 @@ public class PaymentController : Controller
   }
 
 
-
-
-  public async Task<IActionResult> Index()
+  public async Task<IActionResult> Index(int? id_project)
   {
 
-    return _context.Payments != null ?
-                              View(await _context.Payments.Include(c => c.project).ToListAsync()) :
-                                Problem("Entity set 'ApplicationDbContext.Payment'  is null.");
+  // Verificamos si viene un nuevo valor desde el filtro
+    if (Request.Query.ContainsKey("id_project"))
+    {
+        if (id_project.HasValue)
+        {
+            HttpContext.Session.SetInt32("SelectedProjectId", id_project.Value);
+        }
+        else
+        {
+            HttpContext.Session.Remove("SelectedProjectId");
+        }
+    }
+    else
+    {
+        id_project = HttpContext.Session.GetInt32("SelectedProjectId");
+    }
+
+    // Comienza la consulta como IQueryable
+    var paymentsQuery = _context.Payments.Include(p => p.project).AsQueryable();
+
+    // Aplica el filtro si se seleccionó un proyecto
+    if (id_project.HasValue)
+    {
+        paymentsQuery = paymentsQuery.Where(p => p.id_project == id_project.Value);
+    }
+
+    // Carga los proyectos para el filtro
+    var projects = await _context.Projects.ToListAsync();
+    ViewBag.Projects = new SelectList(projects, "id_project", "project_name",id_project);
+    ViewBag.SelectedProjectId = id_project;
+
+    // Ejecuta la consulta
+    var payments = await paymentsQuery.ToListAsync();
+
+    return View(payments);
+   
+     // return _context.Payments != null ?
+       //                         View(await _context.Payments.Include(c => c.project).ToListAsync()) :
+         //                         Problem("Entity set 'ApplicationDbContext.Payment'  is null.");
+    
 
   }
 

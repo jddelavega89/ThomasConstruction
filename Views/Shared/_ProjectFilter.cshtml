@@ -1,0 +1,13 @@
+﻿@*@model int?  // El projectId seleccionado*@
+
+@model ThomasConstruction.ViewModels.ProjectFilterViewModel
+
+<form method="get"   asp-for="SelectedProjectId" asp-action="Index" asp-controller="@Model.ControllerName" class="mb-2">
+    <div class="form-group d-flex align-items-center">
+        <label for="id_project" class="mb-0 mr-2"><strong>Filter by project:</strong></label>
+        <select id="id_project" name="id_project" class="form-control w-auto" onchange="this.form.submit()" 
+        asp-items="Model.Projects">
+            <option value="">-- All projects --</option>
+        </select>
+    </div>
+</form> 

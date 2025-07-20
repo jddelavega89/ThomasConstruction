@@ -9,6 +9,23 @@
 <p>
    <a class="btn btn-secondary" asp-action="Create">Create New</a>
 </p>
+
+@using ThomasConstruction.ViewModels
+
+@{
+    var filterModel = new ProjectFilterViewModel
+    {
+        SelectedProjectId = ViewBag.SelectedProjectId as int?,
+        ControllerName = "ChangeOrder",
+        Projects = ViewBag.Projects as IEnumerable<SelectListItem>
+    };
+}
+
+@try {
+    @await Html.PartialAsync("_ProjectFilter", filterModel)
+} catch (Exception ex) {
+    <p class="text-danger">Error cargando el filtro: @ex.Message</p>
+}
 <table class="table table-striped table-bordered table-hover">
     <thead class="table-dark">
         <tr>

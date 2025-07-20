@@ -27,6 +27,9 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddRazorPages();
 
+builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
+
 var app = builder.Build();
 
 /*
@@ -80,6 +83,9 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles(); // 
 app.UseRouting();
+app.UseSession();
+
+
 
 app.UseAuthentication();
 app.UseAuthorization();
