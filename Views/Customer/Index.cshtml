@@ -50,11 +50,11 @@
                 @Html.DisplayFor(modelItem => item.state.state_name)
             </td>
             <td>
-                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-id="@item.id_customer">Edit</a> |
+                <a class="btn btn-sm btn-warning" asp-action="Edit" asp-route-id="@item.id_customer">Edit</a> |
                 <a class="btn btn-sm btn-info" asp-action="Details" asp-route-id="@item.id_customer">Details</a> |
                 <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.id_customer">Delete</a>
             </td>
         </tr>
 }
     </tbody>
-</table>
+</table> 

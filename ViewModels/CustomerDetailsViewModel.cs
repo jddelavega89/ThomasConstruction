@@ -34,6 +34,7 @@ namespace ThomasConstruction.ViewModels
         [Required]
         public int id_state { get; set; }
 
+         [Display(Name = "State")]
          public string? state { get; set; }
 
 

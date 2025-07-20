@@ -24,6 +24,7 @@ namespace ThomasConstruction.ViewModels
         public string? details { get; set; }
        public int id_project { get; set; }
 
+        [Display(Name = "Project")]     
         public string? project { get; set; }
 
         public  required List<SelectListItem> projects { get; set; } // para el <select>

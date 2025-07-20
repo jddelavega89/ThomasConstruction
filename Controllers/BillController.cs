@@ -149,7 +149,7 @@ public class BillController : Controller
     {
       // ModelState.AddModelError("", "No se puede eliminar el estado porque tiene clientes asociados.");
       //return View(customer); // o redirigir a Details u otra vista con mensaje
-      TempData["ErrorMessage"] = "No se puede eliminar porque hay Bills asociados a esta categoria.";
+      TempData["ErrorMessage"] = "Cannot be deleted because there are Bills associated with this category.";
       return RedirectToAction("Details", new { id = id });
     }
 

@@ -4,24 +4,24 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h4>Bills List</h4>
 
 <p>
-    <a asp-action="Create">Create New</a>
+     <a class="btn btn-secondary" asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
+<table class="table table-striped table-bordered table-hover">
+    <thead class="table-dark">
         <tr>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.bill_date)
             </th>
-              <th>
+              <th scope="col">
                 @Html.DisplayNameFor(model => model.project.project_name)
             </th>
-             <th>
+             <th scope="col">
                 @Html.DisplayNameFor(model => model.bill.bill_name)
             </th>
-           <th>
+           <th scope="col">
                 @Html.DisplayNameFor(model => model.amount)
             </th>
           
@@ -48,9 +48,9 @@
                       
            
             <td>
-                <a asp-action="Edit" asp-route-id="@item.id_project_bill">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.id_project_bill">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.id_project_bill">Delete</a>
+                <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-id="@item.id_project_bill">Edit</a> |
+                <a asp-action="Details" class="btn btn-sm btn-info" asp-route-id="@item.id_project_bill">Details</a> |
+                <a asp-action="Delete" class="btn btn-sm btn-danger" asp-route-id="@item.id_project_bill">Delete</a>
             </td>
         </tr>
 }

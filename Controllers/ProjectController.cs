@@ -58,7 +58,7 @@ public class ProjectController : Controller
            .Where(b => b.id_project == p.id_project)
            .Sum(b => (double?)b.amount) ?? 0)
 
-   })
+   }).OrderByDescending(p => p.id_project) 
    .ToListAsync();
 
 

@@ -4,17 +4,17 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h4>Create Customer</h4> 
 
-<h4>Customer</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" class="row g-3 needs-validation" novalidate>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="customer_name" class="control-label"></label>
-                <input asp-for="customer_name" class="form-control" />
+                <input asp-for="customer_name" class="form-control" id="validationCustom01" required  />
                 <span asp-validation-for="customer_name" class="text-danger"></span>
             </div>
           
@@ -45,23 +45,26 @@
              <div class="form-group">
                 <label asp-for="id_state">State</label>
                 <!-- Dropdown con los estados -->
-           <select asp-for="id_state" class="form-select" name="id_state" asp-items="ViewBag.States")">
+           <select asp-for="id_state" class="form-select" id="validationCustom01" required name="id_state" asp-items="ViewBag.States")">
             <option value="">-- Select State --</option>
             </select>
             <span asp-validation-for="id_state" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                  <div class="d-flex justify-content-begin gap-2 mt-4">
+                <input type="submit" value="Create" class="btn btn-success" />
+                   <a asp-action="Index" class="btn btn-primary">Back to List</a>
             </div>
-        </form>
+            </div>
+        </form> 
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+     <script src="~/js/validation.js"></script>
 }

@@ -33,7 +33,7 @@
 
              <div class="form-group">
                 <label asp-for="budget" class="control-label"></label>
-                <input asp-for="budget" class="form-control" id="validationCustom01" required />
+                <input asp-for="budget" class="form-control" id="validationCustom02" required />
                 <span asp-validation-for="budget" class="text-danger"></span>
             </div>
 
@@ -65,24 +65,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script>
-        (() => {
-  'use strict'
-
-  // Fetch all the forms we want to apply custom Bootstrap validation styles to
-  const forms = document.querySelectorAll('.needs-validation')
-
-  // Loop over them and prevent submission
-  Array.from(forms).forEach(form => {
-    form.addEventListener('submit', event => {
-      if (!form.checkValidity()) {
-        event.preventDefault()
-        event.stopPropagation()
-      }
-
-      form.classList.add('was-validated')
-    }, false)
-  })
-})()
-    </script>
+    <script src="~/js/validation.js"></script>
 }

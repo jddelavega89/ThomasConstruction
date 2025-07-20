@@ -3,66 +3,68 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
 
-<h4>Customer</h4>
+<h4>Edit Customer</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" class="row g-2 needs-validation" novalidate>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="id_customer" />
-            <div class="form-group">
+            
+            <div class="form-group mb-2">
                 <label asp-for="customer_name" class="control-label"></label>
-                <input asp-for="customer_name" class="form-control" />
+                <input asp-for="customer_name" class="form-control"  id="validationCustom01" required />
                 <span asp-validation-for="customer_name" class="text-danger"></span>
             </div>
            
-            <div class="form-group">
+            <div class="form-group mb-2">
                 <label asp-for="phone" class="control-label"></label>
                 <input asp-for="phone" class="form-control" />
                 <span asp-validation-for="phone" class="text-danger"></span>
             </div>
 
-             <div class="form-group">
+             <div class="form-group mb-2">
                 <label asp-for="address" class="control-label"></label>
                 <input asp-for="address" class="form-control" />
                 <span asp-validation-for="address" class="text-danger"></span>
             </div>
 
-              <div class="form-group">
+              <div class="form-group mb-2">
                 <label asp-for="city" class="control-label"></label>
                 <input asp-for="city" class="form-control" />
                 <span asp-validation-for="city" class="text-danger"></span>
             </div>
 
-             <div class="form-group">
+             <div class="form-group mb-2">
                 <label asp-for="zip_code" class="control-label"></label>
                 <input asp-for="zip_code" class="form-control" />
                 <span asp-validation-for="zip_code" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group mb-2">
                 <label asp-for="id_state"></label>
                 <!-- Dropdown con los estados -->
-           <select asp-for="id_state" class="form-select" name="id_state" asp-items="Model.states")">
+           <select asp-for="id_state" class="form-select"  id="validationCustom01" required name="id_state" asp-items="Model.states")">
             <option value="">-- Select State --</option>
             </select>
             <span asp-validation-for="id_state" class="text-danger"></span>
             </div>
 
             
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+           <div class="form-group mb-2">
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                <input class="btn btn-success" type="submit" value="Save" class="btn btn-primary" />
+                  <a class="btn btn-primary" asp-action="Index">Back to List</a>
+                  </div>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+      <script src="~/js/validation.js"></script>
 }

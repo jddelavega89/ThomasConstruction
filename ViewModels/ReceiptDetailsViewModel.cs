@@ -25,6 +25,7 @@ namespace ThomasConstruction.ViewModels
 
        public int id_project { get; set; }
 
+        [Display(Name = "Project")]
         public string? project { get; set; }
 
     

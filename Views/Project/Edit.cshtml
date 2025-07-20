@@ -4,55 +4,55 @@
 }
 
 <div>
-    <h4 class="mb-0">Edit Project</h4>
+    <h4 class="mb-0">Edit Project</h4> 
 </div>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form  asp-action="Edit">
+        <form  asp-action="Edit" class="row g-2 needs-validation" novalidate>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="id_project" />
-            <div class="form-group mb-4">
+            <div class="form-group mb-2">
                 <label class="form-label" asp-for="project_name" class="control-label"></label>
-                <input asp-for="project_name" class="form-control" />
+                <input asp-for="project_name" class="form-control"  id="validationCustom01" required />
                 <span asp-validation-for="project_name" class="text-danger"></span>
             </div>
            
-            <div class="form-group mb-4">
+            <div class="form-group mb-2">
             <label class="form-label" asp-for="id_customer"></label>
                 <!-- Dropdown con los estados -->
-           <select asp-for="id_customer" class="form-select"  name="id_customer" asp-items="Model.customers")">
+           <select asp-for="id_customer" class="form-select"  id="validationCustom02" required  name="id_customer" asp-items="Model.customers")">
             <option value="">-- Select Customer --</option>
             </select>
             <span asp-validation-for="id_customer" class="text-danger"></span>
             </div>
 
-              <div class="form-group mb-4">
+              <div class="form-group mb-2">
                 <label class="form-label" asp-for="budget" class="control-label"></label>
-             <div class="input-group mb-3">
+             <div class="input-group mb-2">
                 <span class="input-group-text">$</span>
-                <input asp-for="budget" class="form-control" />
+                <input asp-for="budget" class="form-control"  id="validationCustom03" required/>
                 </div>
                 <span asp-validation-for="budget" class="text-danger"></span>
             </div>
 
-               <div class="form-group mb-4">
+               <div class="form-group mb-2">
                 <label class="form-label" asp-for="downpayment" class="control-label"></label>
-                 <div class="input-group mb-3">
+                 <div class="input-group mb-2">
                 <span class="input-group-text">$</span>
                 <input asp-for="downpayment" class="form-control" />
                 </div>
                 <span asp-validation-for="downpayment" class="text-danger"></span>
             </div>
 
-             <div class="form-group mb-4">
+             <div class="form-group mb-2">
                 <label class="form-label" asp-for="project_date" class="control-label"></label>
                 <input asp-for="project_date" class="form-control" />
                 <span asp-validation-for="project_date" class="text-danger"></span>
             </div>
 
             
-            <div class="form-group mb-4">
+            <div class="form-group mb-2">
                 <div class="d-flex justify-content-end gap-2 mt-4">
                 <input class="btn btn-success" type="submit" value="Save" class="btn btn-primary" />
                   <a class="btn btn-primary" asp-action="Index">Back to List</a>
@@ -66,4 +66,5 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+      <script src="~/js/validation.js"></script>
 }

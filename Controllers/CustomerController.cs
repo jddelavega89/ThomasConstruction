@@ -218,7 +218,7 @@ public class CustomerController : Controller
     {
       // ModelState.AddModelError("", "No se puede eliminar el estado porque tiene clientes asociados.");
       //return View(customer); // o redirigir a Details u otra vista con mensaje
-      TempData["ErrorMessage"] = "No se puede eliminar porque hay clientes asociados a proyectos.";
+      TempData["ErrorMessage"] = "Cannot be deleted because there are clients associated with projects.";
       return RedirectToAction("Details", new { id = id });
     }
 
