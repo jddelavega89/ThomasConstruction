@@ -1,0 +1,84 @@
+﻿@model ThomasConstruction.Models.WorkerSalaryModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h4>Create Worker Salary</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" class="row g-3 needs-validation" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="salary_date" class="control-label"></label>
+                <input asp-for="salary_date" class="form-control"/>
+                <span asp-validation-for="salary_date" class="text-danger"></span>
+            </div>
+          
+          
+             <div class="form-group">
+                <label asp-for="id_worker">Worker</label>
+                <!-- Dropdown con los estados -->
+           <select asp-for="id_worker" class="form-select" id="validationCustom02" required name="id_worker" asp-items="ViewBag.Workers")">
+            <option value="">-- Select Worker --</option>
+            </select>
+            <span asp-validation-for="id_worker" class="text-danger"></span>
+            </div>
+
+              <div class="form-group">
+                <label asp-for="id_project">Project</label>
+                <!-- Dropdown con los estados -->
+           <select asp-for="id_project" class="form-select" id="validationCustom03" required name="id_project" asp-items="ViewBag.Projects")">
+            <option value="">-- Select Project --</option>
+            </select>
+            <span asp-validation-for="id_project" class="text-danger"></span>
+            </div>
+
+             <div class="form-group">
+                <label asp-for="price_hour" class="control-label"></label>
+                <input asp-for="price_hour" class="form-control" id="price_hour" required />
+                <span asp-validation-for="price_hour" class="text-danger"></span>
+            </div>
+
+               <div class="form-group">
+                <label asp-for="work_hours" class="control-label"></label>
+                <input asp-for="work_hours" class="form-control" id="work_hours" required />
+                <span asp-validation-for="work_hours" class="text-danger"></span>
+            </div>
+
+               <div class="form-group">
+                <label asp-for="salary"></label>
+                <input asp-for="salary" class="form-control" id="salary" readonly />
+            </div>
+
+            <div class="form-group">
+               <div class="d-flex justify-content-begin gap-2 mt-4">
+                <input type="submit" value="Create" class="btn btn-success" />
+                 <a asp-action="Index" class="btn btn-primary">Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+ 
+ <script>
+    
+    function calculate() {
+            let price_hour = parseFloat(document.getElementById("price_hour").value) || 0;
+            let work_hours = parseFloat(document.getElementById("work_hours").value)  || 0;
+            let salary = price_hour * work_hours;
+            document.getElementById("salary").value = salary.toFixed(2);
+          
+        }
+
+        document.getElementById("price_hour").addEventListener("input", calculate);
+        document.getElementById("work_hours").addEventListener("input", calculate);
+</script>
+ <script src="~/js/validation.js"></script>
+}

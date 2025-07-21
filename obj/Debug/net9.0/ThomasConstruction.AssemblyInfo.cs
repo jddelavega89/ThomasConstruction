@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ThomasConstruction")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6488663667ff9a0ad9319394be38974a6bae7f6a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6606d300ee877bad3c817b79e86651f3268d14ab")]
 [assembly: System.Reflection.AssemblyProductAttribute("ThomasConstruction")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ThomasConstruction")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

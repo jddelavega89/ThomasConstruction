@@ -54,9 +54,12 @@ public class ProjectController : Controller
      totalChangeOrders = _context.ChangeOrders
            .Where(b => b.id_project == p.id_project)
            .Sum(b => (double?)b.amount) ?? 0,
-     totalPayments =  (_context.Payments
+     totalPayments = (_context.Payments
            .Where(b => b.id_project == p.id_project)
-           .Sum(b => (double?)b.amount) ?? 0)
+           .Sum(b => (double?)b.amount) ?? 0),
+      totalWorkers =  (_context.WorkerSalarys
+           .Where(b => b.id_project == p.id_project)
+           .Sum(b => (double?)b.salary) ?? 0)
 
    }).OrderByDescending(p => p.id_project) 
    .ToListAsync();
@@ -291,6 +294,7 @@ public class ProjectController : Controller
   .Include(p => p.receipt)
   .Include(p => p.supplie)
   .Include(p => p.changeOrder)
+  .Include(p => p.workerSalary)
   .FirstOrDefaultAsync(p => p.id_project == id);
     if (project != null)
     {
@@ -309,6 +313,9 @@ public class ProjectController : Controller
 
       if (project.changeOrder != null)
         _context.ChangeOrders.RemoveRange(project.changeOrder);
+
+        if (project.workerSalary != null)
+        _context.WorkerSalarys.RemoveRange(project.workerSalary);
 
       _context.Projects.Remove(project);
     }

@@ -28,7 +28,7 @@ namespace ThomasConstruction.Models
         [Display(Name = "Initial Budget")]
         public double budget { get; set; }
 
-         [Display(Name = "Total Budget")]
+        [Display(Name = "Total Budget")]
         public double? total_budget { get; set; }
 
         [DataType(DataType.Currency)]
@@ -55,6 +55,8 @@ namespace ThomasConstruction.Models
         public List<SupplieModel>? supplie { get; set; }
 
         public List<ChangeOrderModel>? changeOrder { get; set; }
+        
+           public List<WorkerSalaryModel>? workerSalary { get; set; }
         
     
     }

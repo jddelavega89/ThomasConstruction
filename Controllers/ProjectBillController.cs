@@ -42,7 +42,7 @@ public class ProjectBillController : Controller
     }
 
    // Comienza la consulta como IQueryable
-    var billsQuery = _context.ProjectBills.Include(p => p.project).AsQueryable();
+    var billsQuery = _context.ProjectBills.Include(p => p.project).Include(p => p.bill).AsQueryable();
 
     // Aplica el filtro si se seleccionó un proyecto
     if (id_project.HasValue)

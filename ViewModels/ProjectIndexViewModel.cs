@@ -65,6 +65,10 @@ namespace ThomasConstruction.ViewModels
     [Display(Name = "Change Orders")]
     public double? totalChangeOrders { get; set; }
 
+    [DataType(DataType.Currency)]
+    [Display(Name = "Worker Salaries")]
+    public double? totalWorkers { get; set; }
+
 
     }
     
