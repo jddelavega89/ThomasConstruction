@@ -27,11 +27,15 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<SupplieModel> Supplies { get; set; } = default!;
     
      public DbSet<ChangeOrderModel> ChangeOrders { get; set; } = default!;
+     
+      public DbSet<WorkerModel> Workers { get; set; } = default!;
+
+      public DbSet<WorkerSalaryModel> WorkerSalarys { get; set; } = default!;
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder); 
-        
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<ProjectModel>()
             .Property(p => p.profit)
             .HasComputedColumnSql("[bueget] - [cost]", stored: true); // Ajusta esto según tu fórmula real
@@ -39,6 +43,10 @@ public class ApplicationDbContext : IdentityDbContext
         modelBuilder.Entity<SupplieModel>()
        .Property(p => p.price_tax)
        .HasComputedColumnSql("[price] + ( [price] * 0.0825)", stored: true); // Ajusta esto según tu fórmula real
+
+         modelBuilder.Entity<WorkerSalaryModel>()
+       .Property(p => p.salary)
+       .HasComputedColumnSql("[price_hour] * [work_hours]", stored: true); // Ajusta esto según tu fórmula real
 
         modelBuilder.Entity<SupplieModel>()
       .Property(p => p.total_price)

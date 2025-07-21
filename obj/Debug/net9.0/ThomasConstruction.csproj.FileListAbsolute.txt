@@ -410,3 +410,5 @@ D:\Work\Programacion\.net core\ThomasConstruction\ThomasConstruction\bin\Debug\n
 D:\Work\Programacion\.net core\ThomasConstruction\ThomasConstruction\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Scripting.resources.dll
 D:\Work\Programacion\.net core\ThomasConstruction\ThomasConstruction\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Scripting.resources.dll
 D:\Work\Programacion\.net core\ThomasConstruction\ThomasConstruction\obj\Debug\net9.0\compressed\0pek8zis7d-ldiw3wgi8j.gz
+D:\Work\Programacion\.net core\ThomasConstruction\ThomasConstruction\bin\Debug\net9.0\X.PagedList.dll
+D:\Work\Programacion\.net core\ThomasConstruction\ThomasConstruction\bin\Debug\net9.0\X.PagedList.Mvc.Core.dll

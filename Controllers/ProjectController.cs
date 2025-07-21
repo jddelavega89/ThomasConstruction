@@ -88,6 +88,16 @@ public class ProjectController : Controller
     if (!string.IsNullOrWhiteSpace(project.project_name) && project.id_customer != 0)
     {
       project.total_budget = project.budget;
+      project.downpayment = (project.downpayment == null ? 0 : project.downpayment);
+
+      //validar que el downpayment no sea mayor  que el budget
+      if (project.downpayment > project.total_budget)
+      {
+         ViewBag.Customers = new SelectList(_context.Customers.ToList(), "id_customer", "customer_name");
+         TempData["ErrorMessage"] = "The downpayment exceeds the project's total budget.";
+        return View(project);
+      }
+      
 
       _context.Add(project);
       await _context.SaveChangesAsync();
@@ -161,10 +171,26 @@ public class ProjectController : Controller
         projectModel.project_name = project.project_name!;
         projectModel.id_customer = project.id_customer!;
         projectModel.budget = project.budget;
-        projectModel.downpayment = project.downpayment;
+        projectModel.downpayment = project.downpayment == null ? 0 : project.downpayment;
         projectModel.project_date = project.project_date;
         projectModel.total_budget = project.budget + totalChanges;
 
+        //debo chequear que el dwompayment + los pagos no se exceda del buldget
+      var totalPaymentProject = await _context.Payments
+    .Where(p => p.id_project == project.id_project)
+    .SumAsync(p => p.amount);
+
+        if (projectModel.downpayment + totalPaymentProject >  projectModel.total_budget)
+        {
+         project.customers = _context.Customers.Select(s => new SelectListItem
+          {
+            Value = s.id_customer.ToString(),
+            Text = s.customer_name
+          }).ToList();
+          
+         TempData["ErrorMessage"] = "The downpayment exceeds the project's total budget.";
+        return View(project);
+       }
 
         _context.Update(projectModel);
         await _context.SaveChangesAsync();

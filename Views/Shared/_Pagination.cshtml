@@ -1,0 +1,40 @@
+@model ThomasConstruction.ViewModels.PaginationViewModel
+
+<nav>
+    <ul class="pagination justify-content-center">
+        <!-- Primera página -->
+        <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+            <a class="page-link" href="?page=1&id_project=@Model.SelectedProjectId">&laquo;</a>
+        </li>
+
+        <!-- Página anterior -->
+        <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+            <a class="page-link" href="?page=@(Model.CurrentPage - 1)&id_project=@Model.SelectedProjectId">&lsaquo;</a>
+        </li>
+
+        <!-- Números de página -->
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            if (i == Model.CurrentPage)
+            {
+                <li class="page-item active"><span class="page-link">@i</span></li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?page=@i&id_project=@Model.SelectedProjectId">@i</a>
+                </li>
+            }
+        }
+
+        <!-- Página siguiente -->
+        <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+            <a class="page-link" href="?page=@(Model.CurrentPage + 1)&id_project=@Model.SelectedProjectId">&rsaquo;</a>
+        </li>
+
+        <!-- Última página -->
+        <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+            <a class="page-link" href="?page=@Model.TotalPages&id_project=@Model.SelectedProjectId">&raquo;</a>
+        </li>
+    </ul>
+</nav>

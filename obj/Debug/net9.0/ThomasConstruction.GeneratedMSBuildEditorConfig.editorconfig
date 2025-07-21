@@ -220,6 +220,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpblBhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Work/Programacion/.net core/ThomasConstruction/ThomasConstruction/Views/Shared/_Pagination.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9QYWdpbmF0aW9uLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Work/Programacion/.net core/ThomasConstruction/ThomasConstruction/Views/Shared/_ProjectFilter.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Qcm9qZWN0RmlsdGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
@@ -246,6 +250,26 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/Work/Programacion/.net core/ThomasConstruction/ThomasConstruction/Views/Supplie/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3VwcGxpZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Work/Programacion/.net core/ThomasConstruction/ThomasConstruction/Views/Worker/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV29ya2VyXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Work/Programacion/.net core/ThomasConstruction/ThomasConstruction/Views/Worker/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV29ya2VyXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Work/Programacion/.net core/ThomasConstruction/ThomasConstruction/Views/Worker/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV29ya2VyXERldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Work/Programacion/.net core/ThomasConstruction/ThomasConstruction/Views/Worker/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV29ya2VyXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Work/Programacion/.net core/ThomasConstruction/ThomasConstruction/Views/Worker/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV29ya2VyXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Work/Programacion/.net core/ThomasConstruction/ThomasConstruction/Views/_ViewImports.cshtml]

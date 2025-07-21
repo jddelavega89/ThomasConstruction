@@ -5,7 +5,7 @@ using ThomasConstruction.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
-using X.PagedList;
+
 
 namespace ThomasConstruction.Controllers;
 
@@ -21,11 +21,11 @@ public class PaymentController : Controller
   }
 
 
-  public async Task<IActionResult> Index(int? id_project,int? page)
+  public async Task<IActionResult> Index(int? id_project)
   {
 
-    int pageNumber = page ?? 1;
-    int pageSize = 10;
+   // int pageNumber = page ?? 1;
+    //int pageSize = 10;
     // Verificamos si viene un nuevo valor desde el filtro
     if (Request.Query.ContainsKey("id_project"))
     {
@@ -58,7 +58,15 @@ public class PaymentController : Controller
     ViewBag.SelectedProjectId = id_project;
 
     // Ejecuta la consulta
-    var payments = await paymentsQuery.OrderBy(p => p.payment_date).ToPagedListAsync(pageNumber, pageSize);
+    //var payments = await paymentsQuery.Skip((pageNumber - 1) * pageSize)
+    //.Take(pageSize).ToListAsync();
+    var payments = await paymentsQuery.ToListAsync();
+
+  /*
+      int totalCount = await paymentsQuery.CountAsync();
+      ViewBag.TotalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+      ViewBag.CurrentPage = pageNumber;
+      */
 
     return View(payments);
    

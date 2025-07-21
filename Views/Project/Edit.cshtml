@@ -2,6 +2,12 @@
 @{
     ViewData["Title"] = "Edit";
 }
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
 
 <div>
     <h4 class="mb-0">Edit Project</h4> 
