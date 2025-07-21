@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: thomas-construction
+    env: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
