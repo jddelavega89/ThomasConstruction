@@ -33,6 +33,14 @@ builder.Services.AddRazorPages();
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
 
+// Agregar esto si usas IIS integration
+builder.Services.Configure<IISServerOptions>(options => 
+{
+    options.AutomaticAuthentication = false;
+});
+
+
+
 var app = builder.Build();
 
 /*
@@ -93,13 +101,13 @@ app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapStaticAssets();
+//app.MapStaticAssets();
 app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+   // .WithStaticAssets();
 
 
 app.Run();
