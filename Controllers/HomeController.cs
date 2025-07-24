@@ -25,6 +25,7 @@ public class HomeController : Controller
     {
 
         var projects = await _context.Projects.ToListAsync();
+        
 
         var projectNames = projects.Select(p => p.project_name).ToList();
         var profits = projects.Select(p => p.profit).ToList();
