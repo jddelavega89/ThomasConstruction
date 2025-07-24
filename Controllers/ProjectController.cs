@@ -57,9 +57,12 @@ public class ProjectController : Controller
      totalPayments = (_context.Payments
            .Where(b => b.id_project == p.id_project)
            .Sum(b => (double?)b.amount) ?? 0),
-      totalWorkers =  (_context.WorkerSalarys
+     totalWorkers = (_context.WorkerSalarys
            .Where(b => b.id_project == p.id_project)
-           .Sum(b => (double?)b.salary) ?? 0)
+           .Sum(b => (double?)b.salary) ?? 0),
+      totalSubContractor =  (_context.SubContractors
+           .Where(b => b.id_project == p.id_project)
+           .Sum(b => (double?)b.cost) ?? 0)
 
    }).OrderByDescending(p => p.id_project) 
    .ToListAsync();
@@ -295,6 +298,7 @@ public class ProjectController : Controller
   .Include(p => p.supplie)
   .Include(p => p.changeOrder)
   .Include(p => p.workerSalary)
+  .Include(p => p.subContractor)
   .FirstOrDefaultAsync(p => p.id_project == id);
     if (project != null)
     {
@@ -316,6 +320,9 @@ public class ProjectController : Controller
 
         if (project.workerSalary != null)
         _context.WorkerSalarys.RemoveRange(project.workerSalary);
+
+          if (project.subContractor != null)
+        _context.SubContractors.RemoveRange(project.subContractor);
 
       _context.Projects.Remove(project);
     }

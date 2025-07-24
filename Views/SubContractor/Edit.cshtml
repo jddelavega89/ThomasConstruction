@@ -1,0 +1,58 @@
+﻿@model ThomasConstruction.ViewModels.SubContractorViewModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h4>Edit SubContractor</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" class="row g-2 needs-validation" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="id_subcontractor" />
+            <div class="form-group mb-2">
+                <label asp-for="date_subc" class="control-label"></label>
+                <input asp-for="date_subc" class="form-control" id="validationCustom01" required />
+                <span asp-validation-for="date_subc" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group">
+            <label asp-for="id_project"></label>
+                <!-- Dropdown con los estados -->
+           <select asp-for="id_project" class="form-select" id="validationCustom02" required name="id_project" asp-items="Model.projects")">
+            <option value="">-- Select Project --</option>
+            </select>
+            <span asp-validation-for="id_project" class="text-danger"></span>
+            </div>
+
+  <div class="form-group">
+                <label asp-for="details" class="control-label"></label>
+                <input asp-for="details" class="form-control" />
+                <span asp-validation-for="details" class="text-danger"></span>
+            </div>
+            
+              <div class="form-group">
+                <label asp-for="cost" class="control-label"></label>
+                <input asp-for="cost" class="form-control" id="validationCustom03" required/>
+                <span asp-validation-for="cost" class="text-danger"></span>
+            </div>
+
+             
+
+                       
+            <div class="form-group">
+               <div class="d-flex justify-content-end gap-2 mt-4">
+                <input type="submit" value="Save" class="btn btn-success" />
+                 <a class="btn btn-primary" asp-action="Index">Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+     <script src="~/js/validation.js"></script>
+}

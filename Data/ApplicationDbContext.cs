@@ -31,6 +31,8 @@ public class ApplicationDbContext : IdentityDbContext
       public DbSet<WorkerModel> Workers { get; set; } = default!;
 
       public DbSet<WorkerSalaryModel> WorkerSalarys { get; set; } = default!;
+
+      public DbSet<SubcontractorModel> SubContractors { get; set; } = default!;
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

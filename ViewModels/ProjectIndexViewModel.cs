@@ -43,6 +43,7 @@ namespace ThomasConstruction.ViewModels
 
     public int id_customer { get; set; }
 
+    [Display(Name = "Customer")]
     public string? customer { get; set; }
 
     [DataType(DataType.Currency)]
@@ -68,6 +69,10 @@ namespace ThomasConstruction.ViewModels
     [DataType(DataType.Currency)]
     [Display(Name = "Worker Salaries")]
     public double? totalWorkers { get; set; }
+
+       [DataType(DataType.Currency)]
+    [Display(Name = "SubContractors")]
+    public double? totalSubContractor { get; set; }
 
 
     }

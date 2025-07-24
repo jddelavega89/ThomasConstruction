@@ -1,0 +1,89 @@
+@model IEnumerable<ThomasConstruction.Models.SubcontractorModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h4>SubContractor List</h4>
+
+<p>
+     <a class="btn btn-secondary" asp-action="Create">Create New</a>
+</p>
+
+@using ThomasConstruction.ViewModels
+
+@{
+    var filterModel = new ProjectFilterViewModel
+    {
+        SelectedProjectId = ViewBag.SelectedProjectId as int?,
+        ControllerName = "Receipt",
+        Projects = ViewBag.Projects as IEnumerable<SelectListItem>
+    };
+}
+
+@try {
+    @await Html.PartialAsync("_ProjectFilter", filterModel)
+} catch (Exception ex) {
+    <p class="text-danger">Error cargando el filtro: @ex.Message</p>
+}
+
+<table id="subCTable" class="table table-striped table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.date_subc)
+            </th>
+              <th scope="col">
+                @Html.DisplayNameFor(model => model.project.project_name)
+            </th>
+             <th scope="col">
+                @Html.DisplayNameFor(model => model.details)
+            </th>
+           <th scope="col">
+                @Html.DisplayNameFor(model => model.cost)
+            </th>
+          
+           
+           
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.date_subc)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.project.project_name)
+            </td>
+              <td>
+                @Html.DisplayFor(modelItem => item.details)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.cost)
+            </td>
+                      
+           
+            <td>
+                <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-id="@item.id_subcontractor">Edit</a> |
+                <a asp-action="Details" class="btn btn-sm btn-info" asp-route-id="@item.id_subcontractor">Details</a> |
+                <a asp-action="Delete" class="btn btn-sm btn-danger" asp-route-id="@item.id_subcontractor">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+@section Scripts {
+   <script>
+    $(document).ready(function () {
+        $('#subCTable').DataTable({
+           
+            "pageLength": 5,
+            "lengthChange": false 
+        });
+    });
+</script>
+}
+

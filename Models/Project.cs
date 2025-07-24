@@ -55,8 +55,10 @@ namespace ThomasConstruction.Models
         public List<SupplieModel>? supplie { get; set; }
 
         public List<ChangeOrderModel>? changeOrder { get; set; }
+
+        public List<WorkerSalaryModel>? workerSalary { get; set; }
         
-           public List<WorkerSalaryModel>? workerSalary { get; set; }
+        public List<SubcontractorModel>? subContractor { get; set; }
         
     
     }
